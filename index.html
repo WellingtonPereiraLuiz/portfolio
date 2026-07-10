@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wellington Luiz — Desenvolvedor de Software</title>
+<meta name="description" content="Portfólio de Wellington Luiz, desenvolvedor de software.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- atmospheric fixed layers -->
+<div class="bg-base" aria-hidden="true"></div>
+<div class="bg-fog" id="fogLayer" aria-hidden="true"></div>
+<div class="bg-embers" id="embersLayer" aria-hidden="true"></div>
+<div class="bg-vignette" aria-hidden="true"></div>
+
+<!-- app root: navbar + sections + footer, rebuilt on lang/data change -->
+<div id="app"></div>
+
+<!-- modal (rendered on demand) -->
+<div id="modalRoot"></div>
+
+<!-- forge admin overlay (rendered when #forge route is active) -->
+<div id="forgeRoot"></div>
+
+<!-- toast -->
+<div id="toastRoot"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
