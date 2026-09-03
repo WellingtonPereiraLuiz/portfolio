@@ -18,7 +18,7 @@ Portfólio profissional de Wellington Luiz, desenvolvedor de software. Site est�
 index.html          shell da página
 css/style.css        todo o estilo visual
 js/app.js             dados do portfólio (PORTFOLIO_DATA), renderização e interações
-assets/img/           imagens usadas nos cards de projeto
+assets/img/           imagens de apoio (logo etc.)
 ```
 
 Não há build step — é HTML/CSS/JS servido diretamente.

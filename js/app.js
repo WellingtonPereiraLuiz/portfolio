@@ -40,25 +40,32 @@
     ],
     projects: [
       {
-        id: 1, title: 'Nossos Kitutes', image: 'assets/img/logonossoskitutes.jpg', badge: '',
+        id: 3, title: 'CustoDoce', badge: '1º LUGAR — HACKATHON IFRO',
+        tags: ['Flutter', 'Dart', 'Firebase', 'Riverpod', 'SQLite'],
+        shortDesc: { pt: 'Calculadora de custos definitiva para confeiteiros e padeiros artesanais.', en: 'The definitive cost calculator for artisanal bakers and confectioners.' },
+        longDesc: { pt: 'Aplicativo multiplataforma (Android e Web) que resolve a precificação artesanal de ponta a ponta: cadastro de ingredientes, receitas inteligentes com cálculo em tempo real, gestão de custos invisíveis e assistente de IA integrado (Google Gemini). 1º Lugar na categoria "Desafio Livre de Impacto Regional" na Hackathon Extensionista IFRO Ariquemes 2026/1.', en: 'Cross-platform app (Android and Web) that solves artisanal pricing end to end: ingredient registry, smart recipes with real-time cost calculation, hidden-cost management and an integrated AI assistant (Google Gemini). 1st place in the "Regional Impact Open Challenge" at the IFRO Ariquemes Extension Hackathon 2026/1.' },
+        links: [{ label: 'Live MVP', url: 'https://custodoce-b07ce.web.app' }, { label: 'GitHub', url: 'https://github.com/WellingtonPereiraLuiz/CustoDoce' }],
+      },
+      {
+        id: 1, title: 'Nossos Kitutes', badge: '',
         tags: ['React', 'TypeScript', 'Tailwind CSS', 'React Query', 'Base44'],
         shortDesc: { pt: 'Plataforma de venda de quitutes artesanais integrada ao WhatsApp, com catálogo interativo e painel administrativo.', en: 'Artisanal treats storefront integrated with WhatsApp, featuring an interactive catalog and admin panel.' },
         longDesc: { pt: 'Vitrine digital elegante com experiência de compra fluida: landing page que comunica os valores da marca (Rafa & Well), cardápio interativo segmentado por categorias com controle de estoque e carrinho flutuante persistente. Ao finalizar a compra, o pedido é formatado automaticamente e enviado via WhatsApp. Um painel administrativo integrado ao Base44 permite gerenciar catálogo, preços e disponibilidade em tempo real.', en: 'An elegant digital storefront with a fluid shopping experience: an engaging landing page, an interactive menu segmented by category with stock control and a persistent floating cart. On checkout, the order is formatted automatically and sent via WhatsApp. A Base44-integrated admin panel manages catalog, prices and availability in real time.' },
         links: [{ label: 'Live Demo', url: 'https://kitutes-artesanais-delivery.base44.app' }],
       },
       {
-        id: 2, title: 'Doni Assados Delivery', image: '', badge: '',
+        id: 2, title: 'Doni Assados Delivery', badge: '',
         tags: ['React', 'Vite', 'TypeScript', 'Tailwind CSS', 'Base44'],
         shortDesc: { pt: 'Plataforma de delivery para assados desenvolvida com React e Vite sobre a infraestrutura Base44.', en: 'Roasted-food delivery platform built with React and Vite on the Base44 infrastructure.' },
         longDesc: { pt: 'Aplicação moderna de entrega de assados integrada à plataforma Base44, projetada para execução local eficiente com Vite e sincronização contínua com o Base44 Builder. Suporte a variáveis de ambiente centralizadas para App ID e URL da API, garantindo flexibilidade, deploy contínuo via GitHub e uma experiência de compra robusta e ágil.', en: 'A modern roasted-food delivery app integrated with Base44, designed for efficient local development with Vite and continuous sync with the Base44 Builder. Centralized environment variables for App ID and API URL enable flexible continuous deployment via GitHub and a robust, fast shopping experience.' },
         links: [{ label: 'Live Demo', url: 'https://doni-assados-delivery.base44.app' }],
       },
       {
-        id: 3, title: 'CustoDoce', image: '', badge: '1º LUGAR — HACKATHON IFRO',
-        tags: ['Flutter', 'Dart', 'Firebase', 'Riverpod', 'SQLite'],
-        shortDesc: { pt: 'Calculadora de custos definitiva para confeiteiros e padeiros artesanais.', en: 'The definitive cost calculator for artisanal bakers and confectioners.' },
-        longDesc: { pt: 'Aplicativo multiplataforma (Android e Web) que resolve a precificação artesanal de ponta a ponta: cadastro de ingredientes, receitas inteligentes com cálculo em tempo real, gestão de custos invisíveis e assistente de IA integrado (Google Gemini). 1º Lugar na categoria "Desafio Livre de Impacto Regional" na Hackathon Extensionista IFRO Ariquemes 2026/1.', en: 'Cross-platform app (Android and Web) that solves artisanal pricing end to end: ingredient registry, smart recipes with real-time cost calculation, hidden-cost management and an integrated AI assistant (Google Gemini). 1st place in the "Regional Impact Open Challenge" at the IFRO Ariquemes Extension Hackathon 2026/1.' },
-        links: [{ label: 'Live MVP', url: 'https://custodoce-b07ce.web.app' }, { label: 'GitHub', url: 'https://github.com/WellingtonPereiraLuiz/CustoDoce' }],
+        id: 4, title: 'Anne Ilustradora', badge: '',
+        tags: ['HTML5', 'CSS3', 'JavaScript', 'Supabase', 'Vercel'],
+        shortDesc: { pt: 'Site de portfólio e orçamento interativo para uma ilustradora, com calculadora de preços em tempo real e hub da webcomic.', en: 'Portfolio and interactive quote site for an illustrator, with a real-time price calculator and a webcomic hub.' },
+        longDesc: { pt: 'Plataforma para a ilustradora Anne apresentar seu trabalho e receber comissões: galeria de artes em layout responsivo, construtor de pedidos que calcula o valor da comissão em tempo real conforme o estilo (cartoon ou chibi) e as opções escolhidas, e uma página dedicada à webcomic "Finn, o Anti-Herói" com capa, perfis de personagens e links para as plataformas de leitura. O conteúdo (preços, galeria, links e dados da HQ) fica no Supabase (PostgreSQL + storage, com Row Level Security), permitindo edição por um painel administrativo sem mexer no código. Front-end em HTML/CSS/JS puro com suporte a tema claro/escuro, hospedado na Vercel sem build step.', en: 'A platform for illustrator Anne to showcase her work and take commissions: a responsive artwork gallery, an order builder that calculates the commission price in real time based on the chosen style (cartoon or chibi) and selected options, and a dedicated page for the webcomic "Finn, the Anti-Hero" with cover art, character profiles and links to reading platforms. Content (prices, gallery, links and comic data) lives in Supabase (PostgreSQL + storage, with Row Level Security), enabling edits through an admin panel without touching code. Vanilla HTML/CSS/JS front-end with light/dark theme support, hosted on Vercel with no build step.' },
+        links: [{ label: 'Live MVP', url: 'https://anne-ilustradora.vercel.app/' }],
       },
     ],
     certifications: [
@@ -362,23 +369,21 @@
   }
 
   function renderProjects(t, data) {
-    const items = data.projects.map((pj) => {
-      const img = pj.image ? `<img src="${esc(pj.image)}" alt="">` : '';
-      const badge = pj.badge ? `<div class="project-badge">${esc(pj.badge)}</div>` : '';
+    const items = data.projects.map((pj, i) => {
+      const n = String(i + 1).padStart(2, '0');
+      const badge = pj.badge ? `<span class="project-badge">${esc(pj.badge)}</span>` : '';
       return `
       <div class="project-card" data-reveal data-action="open-project" data-id="${pj.id}">
-        <div class="project-banner">
-          <div class="project-banner-glyph">◆</div>
-          ${img}
-          <div class="project-banner-shade"></div>
+        <div class="project-topline"></div>
+        <div class="project-index" aria-hidden="true">${n}</div>
+        <div class="project-kicker">◆ Nº ${n}</div>
+        <div class="project-head-row">
+          <div class="project-title">${esc(pj.title)}</div>
           ${badge}
         </div>
-        <div class="project-body">
-          <div class="project-title">${esc(pj.title)}</div>
-          <div class="project-short">${esc(tr(pj.shortDesc, state.lang))}</div>
-          <div class="project-tags">${pj.tags.map((tg) => `<span class="tag">${esc(tg)}</span>`).join('')}</div>
-          <div class="view-details">${esc(t.viewDetails)} →</div>
-        </div>
+        <div class="project-short">${esc(tr(pj.shortDesc, state.lang))}</div>
+        <div class="project-tags">${pj.tags.map((tg) => `<span class="tag">${esc(tg)}</span>`).join('')}</div>
+        <div class="view-details">${esc(t.viewDetails)} →</div>
       </div>`;
     }).join('');
 
@@ -655,7 +660,7 @@
   const ADMIN_SECTIONS = [
     { key: 'techStack', label: 'ARSENAL TÉCNICO (JSON)', hint: 'Lista de grupos: { category: {pt,en}, items: ["..."] }' },
     { key: 'roadmap', label: 'ROTA DE ASCENSÃO (JSON)', hint: 'Lista de metas: { title: {pt,en}, desc: {pt,en} }' },
-    { key: 'projects', label: 'PROJETOS (JSON)', hint: 'Campos: id, title, image, badge, tags[], shortDesc{pt,en}, longDesc{pt,en}, links[{label,url}]' },
+    { key: 'projects', label: 'PROJETOS (JSON)', hint: 'Campos: id, title, badge, tags[], shortDesc{pt,en}, longDesc{pt,en}, links[{label,url}]' },
     { key: 'certifications', label: 'CERTIFICAÇÕES (JSON)', hint: 'Campos: id, name, issuer, description{pt,en}, startDate, endDate, hours, institution, links[]' },
     { key: 'career', label: 'CARREIRA (JSON)', hint: 'Campos: id, role{pt,en}, company, period{pt,en}, shortDesc{pt,en}, description{pt,en}, achievements{pt[],en[]}' },
   ];
