@@ -7,7 +7,7 @@
   const EMBER_COUNT = 14;
   const FOG_INTENSITY = 0.55;
   const DEFAULT_LANG = 'pt';
-  const FORGE_DEFAULT_PASS = 'vigilante';
+  const CONTENT_TIMEOUT_MS = 4000;
 
   // ────────────────────────────────────────────────────────────────────────
   // Data
@@ -194,66 +194,24 @@
   function storeSet(key, value) {
     try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
   }
-  function storeRemove(key) {
-    try { localStorage.removeItem(key); } catch (e) {}
-  }
 
-  const DATA_KEY = 'wl_portfolio_data';
   function defaultData() {
     return JSON.parse(JSON.stringify(PORTFOLIO_DATA));
   }
 
-  const isObj = (v) => v != null && typeof v === 'object' && !Array.isArray(v);
-  const isText = (v) => typeof v === 'string' || (isObj(v) && typeof v.pt === 'string');
-  const isStrList = (v) => Array.isArray(v) && v.every((s) => typeof s === 'string');
-  const isLinks = (v) => v === undefined || (Array.isArray(v) && v.every((l) => isObj(l) && typeof l.url === 'string'));
-  const isChips = (v) => v === undefined || (isObj(v) && isStrList(v.pt) && (v.en === undefined || isStrList(v.en)));
-
-  // Returns '' when the data has the shape the renderers expect, else a description of the first problem.
-  function dataError(d) {
-    if (!isObj(d)) return 'os dados não são um objeto';
-    const p = d.personal;
-    if (!isObj(p)) return '"personal" ausente';
-    for (const k of ['name', 'location', 'github', 'email']) {
-      if (typeof p[k] !== 'string') return `personal.${k} deve ser texto`;
+  // Content comes from Supabase (edited in admin.html); PORTFOLIO_DATA above is the
+  // fallback when Supabase is not configured, unreachable, slow or returns a bad shape.
+  async function loadContent() {
+    if (!supabaseConfigured()) return defaultData();
+    try {
+      const row = await fetchPortfolioContent({ timeoutMs: CONTENT_TIMEOUT_MS });
+      const err = portfolioDataError(row.data);
+      if (err) throw new Error('formato inválido: ' + err);
+      return row.data;
+    } catch (e) {
+      console.warn('Conteúdo do Supabase indisponível; usando o PORTFOLIO_DATA do app.js.', e);
+      return defaultData();
     }
-    for (const k of ['title', 'bio', 'education', 'languages', 'quote']) {
-      if (!isText(p[k])) return `personal.${k} deve ser texto ou { pt, en }`;
-    }
-    const itemChecks = {
-      techStack: (g) => isText(g.category) && isStrList(g.items),
-      roadmap: (r) => isText(r.title) && isText(r.desc),
-      projects: (x) => x.id != null && typeof x.title === 'string' && isStrList(x.tags) && (!x.badge || isText(x.badge))
-        && isText(x.shortDesc) && isText(x.longDesc) && isLinks(x.links),
-      certifications: (c) => c.id != null && isText(c.name) && isText(c.description) && isLinks(c.links),
-      career: (j) => j.id != null && typeof j.company === 'string' && isText(j.role) && isText(j.period)
-        && isText(j.shortDesc) && isText(j.description) && isChips(j.achievements),
-    };
-    for (const [key, ok] of Object.entries(itemChecks)) {
-      if (!Array.isArray(d[key])) return `"${key}" deve ser uma lista`;
-      const bad = d[key].findIndex((item) => !isObj(item) || !ok(item));
-      if (bad !== -1) return `${key}[${bad}] tem campos faltando ou com formato errado`;
-    }
-    return '';
-  }
-
-  function loadData() {
-    let raw = null;
-    try { raw = JSON.parse(storeGet(DATA_KEY)); } catch (e) {}
-    if (!raw) return defaultData();
-    // fill fields added to PORTFOLIO_DATA after this copy was saved
-    const defaults = defaultData();
-    const merged = { ...defaults, ...raw, personal: { ...defaults.personal, ...raw.personal } };
-    const err = dataError(merged);
-    if (err) {
-      console.warn('Dados salvos no navegador descartados:', err);
-      storeRemove(DATA_KEY);
-      return defaults;
-    }
-    return merged;
-  }
-  function saveData(data) {
-    return storeSet(DATA_KEY, JSON.stringify(data));
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -262,17 +220,10 @@
   const state = {
     lang: ['pt', 'en'].includes(storeGet('wl_lang')) ? storeGet('wl_lang') : DEFAULT_LANG,
     active: 'sobre',
-    data: loadData(),
+    data: null,
     modal: null,
     openCert: null,
-    route: window.location.hash === '#forge' ? 'forge' : 'site',
-    authed: false,
-    authError: '',
   };
-  let adminEdits = {};
-  let adminJsonEdits = {};
-  let passTry = '';
-  let newPass = '';
 
   // ────────────────────────────────────────────────────────────────────────
   // Atmosphere: fog + embers (built once)
@@ -312,14 +263,13 @@
   // ────────────────────────────────────────────────────────────────────────
   // Rendering: main app (nav + sections + footer)
   // ────────────────────────────────────────────────────────────────────────
-  // If saved data still breaks rendering, fall back to PORTFOLIO_DATA so the page
-  // (and the editor at #forge) never ends up blank.
+  // If the loaded content still breaks rendering, fall back to PORTFOLIO_DATA so the
+  // page never ends up blank.
   function renderApp() {
     try {
       renderPage();
     } catch (err) {
-      console.error('Falha ao renderizar os dados salvos; voltando aos dados padrão.', err);
-      storeRemove(DATA_KEY);
+      console.error('Falha ao renderizar o conteúdo; usando o PORTFOLIO_DATA do app.js.', err);
       state.data = defaultData();
       renderPage();
     }
@@ -647,7 +597,7 @@
     rafId = requestAnimationFrame(() => { rafId = null; spy(); });
   }
   function spy() {
-    if (state.route === 'forge' || suppressSpy) return;
+    if (suppressSpy) return;
     const mid = window.innerHeight * 0.35;
     let active = 'sobre';
     for (const id of SECTION_IDS) {
@@ -790,182 +740,8 @@
   }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Forge (hidden admin at #forge)
+  // Clipboard
   // ────────────────────────────────────────────────────────────────────────
-  function passKey() { return storeGet('wl_forge_pass') || FORGE_DEFAULT_PASS; }
-
-  function checkHash() {
-    const forge = window.location.hash === '#forge';
-    state.route = forge ? 'forge' : 'site';
-    if (forge) { adminEdits = {}; adminJsonEdits = {}; passTry = ''; newPass = ''; }
-    renderForge();
-  }
-
-  const ADMIN_SECTIONS = [
-    { key: 'techStack', label: 'ARSENAL TÉCNICO (JSON)', hint: 'Lista de grupos: { category: {pt,en}, items: ["..."] }' },
-    { key: 'roadmap', label: 'ROTA DE ASCENSÃO (JSON)', hint: 'Lista de metas: { title: {pt,en}, desc: {pt,en} }' },
-    { key: 'projects', label: 'PROJETOS (JSON)', hint: 'Campos: id, title, badge ("texto" ou {pt,en}), tags[], shortDesc{pt,en}, longDesc{pt,en}, links[{label,url}]' },
-    { key: 'certifications', label: 'CERTIFICAÇÕES (JSON)', hint: 'Campos: id, name, issuer, description{pt,en}, startDate, endDate, hours, institution, links[] — textos aceitam "texto" ou {pt,en}' },
-    { key: 'career', label: 'CARREIRA (JSON)', hint: 'Campos: id, role{pt,en}, company, period{pt,en}, shortDesc{pt,en}, description{pt,en}, achievements{pt[],en[]}' },
-  ];
-
-  function renderForge() {
-    const root = document.getElementById('forgeRoot');
-    if (state.route !== 'forge') { root.innerHTML = ''; return; }
-    if (!state.authed) {
-      root.innerHTML = `
-      <div class="forge-overlay">
-        <div class="forge-gate">
-          <div class="forge-gate-box">
-            <div class="forge-kicker">◆ A FORJA</div>
-            <div class="forge-title">Acesso restrito</div>
-            <div class="forge-hint">Somente o ferreiro conhece a palavra que acende esta chama.</div>
-            <input type="password" class="forge-input" placeholder="Senha" id="forgePassInput" autocomplete="off">
-            ${state.authError ? `<div class="forge-error">${esc(state.authError)}</div>` : ''}
-            <button class="forge-btn-solid" data-action="forge-login">ENTRAR</button>
-            <button class="forge-btn-ghost" data-action="forge-exit">← VOLTAR AO PORTFÓLIO</button>
-          </div>
-        </div>
-      </div>`;
-      const input = document.getElementById('forgePassInput');
-      if (input) {
-        input.addEventListener('input', (e) => { passTry = e.target.value; });
-        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') forgeLogin(); });
-        input.focus();
-      }
-      return;
-    }
-
-    const p = state.data.personal;
-    const fields = [
-      { field: 'name', label: 'NOME', value: p.name, area: false },
-      { field: 'location', label: 'LOCALIZAÇÃO', value: p.location, area: false },
-      { field: 'title_pt', label: 'TÍTULO (PT)', value: p.title.pt, area: false },
-      { field: 'title_en', label: 'TÍTULO (EN)', value: p.title.en, area: false },
-      { field: 'bio_pt', label: 'BIO (PT)', value: p.bio.pt, area: true },
-      { field: 'bio_en', label: 'BIO (EN)', value: p.bio.en, area: true },
-      { field: 'education_pt', label: 'EDUCAÇÃO (PT)', value: p.education.pt, area: false },
-      { field: 'education_en', label: 'EDUCAÇÃO (EN)', value: p.education.en, area: false },
-      { field: 'languages_pt', label: 'IDIOMAS (PT)', value: p.languages.pt, area: false },
-      { field: 'languages_en', label: 'IDIOMAS (EN)', value: p.languages.en, area: false },
-      { field: 'quote_pt', label: 'CITAÇÃO (PT)', value: p.quote.pt, area: false },
-      { field: 'quote_en', label: 'CITAÇÃO (EN)', value: p.quote.en, area: false },
-      { field: 'github', label: 'GITHUB (URL)', value: p.github, area: false },
-      { field: 'email', label: 'E-MAIL', value: p.email, area: false },
-    ];
-    const fieldsHtml = fields.map((f) => `
-      <div class="forge-field ${f.area ? 'span-full' : ''}">
-        <div class="forge-field-label">${esc(f.label)}</div>
-        ${f.area
-          ? `<textarea rows="4" class="forge-input" data-field="${esc(f.field)}">${esc(f.value)}</textarea>`
-          : `<input class="forge-input" data-field="${esc(f.field)}" value="${esc(f.value)}">`}
-      </div>`).join('');
-
-    const sectionsHtml = ADMIN_SECTIONS.map((s) => `
-      <div class="forge-section">
-        <div class="forge-section-title">▸ ${esc(s.label)}</div>
-        <div class="forge-section-hint">${esc(s.hint)}</div>
-        <textarea rows="12" class="forge-json" data-section="${esc(s.key)}" spellcheck="false">${esc(JSON.stringify(state.data[s.key], null, 2))}</textarea>
-      </div>`).join('');
-
-    root.innerHTML = `
-    <div class="forge-overlay">
-      <div class="forge-panel">
-        <div class="forge-panel-head">
-          <div>
-            <div class="forge-kicker">◆ A FORJA</div>
-            <div class="forge-panel-title">Painel do Ferreiro</div>
-          </div>
-          <div class="forge-actions">
-            <button class="forge-btn forge-btn-primary" data-action="forge-save">SALVAR</button>
-            <button class="forge-btn forge-btn-outline" data-action="forge-copy">COPIAR PORTFOLIO_DATA</button>
-            <button class="forge-btn forge-btn-outline" data-action="forge-download">BAIXAR JSON</button>
-            <button class="forge-btn forge-btn-danger" data-action="forge-reset">RESTAURAR PADRÃO</button>
-            <button class="forge-btn forge-btn-muted" data-action="forge-exit">SAIR</button>
-          </div>
-        </div>
-        <div class="forge-note">As alterações salvas ficam neste navegador (localStorage) e o site já reflete tudo na hora. Use <code>COPIAR PORTFOLIO_DATA</code> para gerar o bloco pronto e colar no <code>js/app.js</code> do seu repositório.</div>
-
-        <div class="forge-section">
-          <div class="forge-section-title">▸ DADOS PESSOAIS</div>
-          <div class="forge-fields">${fieldsHtml}</div>
-        </div>
-
-        ${sectionsHtml}
-
-        <div class="forge-security">
-          <div class="forge-section-title">▸ SEGURANÇA</div>
-          <div class="forge-security-row">
-            <input type="password" class="forge-input" placeholder="Nova senha" id="forgeNewPass" autocomplete="off">
-            <button class="forge-btn forge-btn-outline" data-action="forge-changepass">ALTERAR SENHA</button>
-          </div>
-        </div>
-      </div>
-    </div>`;
-
-    const newPassInput = document.getElementById('forgeNewPass');
-    if (newPassInput) newPassInput.addEventListener('input', (e) => { newPass = e.target.value; });
-
-    root.querySelectorAll('[data-field]').forEach((el) => {
-      el.addEventListener('change', (e) => { adminEdits[e.target.dataset.field] = e.target.value; });
-    });
-    root.querySelectorAll('[data-section]').forEach((el) => {
-      el.addEventListener('change', (e) => { adminJsonEdits[e.target.dataset.section] = e.target.value; });
-    });
-  }
-
-  function forgeLogin() {
-    if ((passTry || '') === passKey()) {
-      state.authed = true;
-      state.authError = '';
-    } else {
-      state.authError = 'Senha incorreta. A chama não acendeu.';
-    }
-    renderForge();
-  }
-
-  function forgeExit() {
-    state.authed = false;
-    state.authError = '';
-    window.location.hash = '';
-  }
-
-  function forgeSave() {
-    const data = JSON.parse(JSON.stringify(state.data));
-    Object.entries(adminEdits).forEach(([f, v]) => {
-      if (f.endsWith('_pt') || f.endsWith('_en')) {
-        const key = f.slice(0, -3), lang = f.slice(-2);
-        if (data.personal[key] && typeof data.personal[key] === 'object') data.personal[key][lang] = v;
-      } else {
-        data.personal[f] = v;
-      }
-    });
-    for (const [key, raw] of Object.entries(adminJsonEdits)) {
-      try {
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) throw new Error('esperado um array');
-        data[key] = parsed;
-      } catch (err) {
-        showToast('JSON inválido em "' + key + '": ' + err.message);
-        return;
-      }
-    }
-    const err = dataError(data);
-    if (err) { showToast('Não salvo: ' + err + '.'); return; }
-    const saved = saveData(data);
-    adminEdits = {}; adminJsonEdits = {};
-    state.data = data;
-    renderApp();
-    renderForge();
-    showToast(saved
-      ? 'Salvo. O portfólio já reflete as alterações.'
-      : 'Aplicado, mas o navegador bloqueou o armazenamento: some ao recarregar.');
-  }
-
-  function forgeCopy() {
-    const block = '// Gerado pela Forja — cole no lugar do PORTFOLIO_DATA em js/app.js\nconst PORTFOLIO_DATA = ' + JSON.stringify(state.data, null, 2) + ';\n';
-    copyText(block, 'PORTFOLIO_DATA copiado para a área de transferência.', 'Não foi possível copiar automaticamente.');
-  }
   function copyEmail() {
     const t = LABELS[state.lang] || LABELS.pt;
     const email = state.data.personal.email;
@@ -991,33 +767,6 @@
     } catch (e) { return false; }
   }
 
-  function forgeDownload() {
-    const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'portfolio-data.json';
-    document.body.appendChild(a); a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-    showToast('portfolio-data.json baixado.');
-  }
-
-  function forgeReset() {
-    if (!window.confirm('Restaurar todos os dados para o padrão do repositório?')) return;
-    storeRemove(DATA_KEY);
-    state.data = defaultData();
-    renderApp();
-    renderForge();
-    showToast('Dados restaurados.');
-  }
-
-  function forgeChangePass() {
-    if (!newPass || newPass.length < 4) { showToast('Senha muito curta (mín. 4 caracteres)'); return; }
-    showToast(storeSet('wl_forge_pass', newPass)
-      ? 'Senha alterada.'
-      : 'O navegador bloqueou o armazenamento; a senha não foi alterada.');
-  }
-
   // ────────────────────────────────────────────────────────────────────────
   // Event delegation
   // ────────────────────────────────────────────────────────────────────────
@@ -1038,13 +787,6 @@
       case 'open-project': openProjectModal(id); break;
       case 'toggle-cert': toggleCert(id); break;
       case 'close-modal': closeModal(); break;
-      case 'forge-login': forgeLogin(); break;
-      case 'forge-exit': forgeExit(); break;
-      case 'forge-save': forgeSave(); break;
-      case 'forge-copy': forgeCopy(); break;
-      case 'forge-download': forgeDownload(); break;
-      case 'forge-reset': forgeReset(); break;
-      case 'forge-changepass': forgeChangePass(); break;
     }
   });
 
@@ -1058,7 +800,6 @@
     }
   });
 
-  window.addEventListener('hashchange', checkHash);
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
     if (state.openCert != null) setCertOpen(state.openCert, true);
@@ -1068,7 +809,12 @@
   // Init
   // ────────────────────────────────────────────────────────────────────────
   buildEmbers();
-  renderApp();
-  checkHash();
-  spy();
+  const appRoot = document.getElementById('app');
+  appRoot.setAttribute('aria-busy', 'true');
+  loadContent().then((data) => {
+    state.data = data;
+    renderApp();
+    appRoot.removeAttribute('aria-busy');
+    spy();
+  });
 })();
