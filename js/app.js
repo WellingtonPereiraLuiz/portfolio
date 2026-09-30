@@ -24,7 +24,7 @@
       languages: { pt: 'Português (nativo) · Inglês (iniciante)', en: 'Portuguese (native) · English (beginner)' },
       location: 'Ariquemes — RO, Brasil',
       github: 'https://github.com/WellingtonPereiraLuiz',
-      linkedin: 'https://www.linkedin.com/feed/',
+      email: 'wellingtonpereiraluiz89@gmail.com',
       quote: { pt: '"A evolução é o único caminho no vazio."', en: '"Evolution is the only path through the void."' },
     },
     techStack: [
@@ -39,6 +39,13 @@
       { title: { pt: 'Carreira Internacional', en: 'International Career' }, desc: { pt: 'Fluência em inglês com foco no mercado do Canadá ou Finlândia.', en: 'English fluency targeting the Canadian or Finnish tech market.' } },
     ],
     projects: [
+      {
+        id: 7, title: 'TRIRREME', badge: 'SÓCIO-FUNDADOR',
+        tags: ['Sistemas sob medida', 'Web', 'Automação', 'Vercel'],
+        shortDesc: { pt: 'Empresa de desenvolvimento de software que fundei com dois sócios: sistemas sob medida, sites e automações para empresas.', en: 'Software development company I co-founded with two partners: custom systems, websites and automation for businesses.' },
+        longDesc: { pt: 'Sou sócio-fundador da TRIRREME, empresa de tecnologia criada com dois colegas de ADS do IFRO. Desenvolvemos sistemas sob medida (gestão de pedidos e estoque em tempo real), sites e catálogos digitais integrados ao WhatsApp, automações e integrações com planilhas e ERPs, além de consultoria, suporte e hospedagem. Trabalhamos com escopo, prazo e preço fechados, metodologia em etapas e entregas quinzenais.', en: 'I am a co-founder of TRIRREME, a tech company started with two fellow Systems Analysis students from IFRO. We build custom systems (real-time order and inventory management), websites and digital catalogs integrated with WhatsApp, automations and integrations with spreadsheets and ERPs, plus consulting, support and hosting. We work with fixed scope, timeline and price, a staged methodology and bi-weekly deliveries.' },
+        links: [{ label: 'Site', url: 'https://trirreme.com/' }],
+      },
       {
         id: 3, title: 'CustoDoce', badge: '1º LUGAR — HACKATHON IFRO',
         tags: ['Flutter', 'Dart', 'Firebase', 'Riverpod', 'SQLite'],
@@ -63,9 +70,23 @@
       {
         id: 4, title: 'Anne Ilustradora', badge: '',
         tags: ['HTML5', 'CSS3', 'JavaScript', 'Supabase', 'Vercel'],
-        shortDesc: { pt: 'Site de portfólio e orçamento interativo para uma ilustradora, com calculadora de preços em tempo real e hub da webcomic.', en: 'Portfolio and interactive quote site for an illustrator, with a real-time price calculator and a webcomic hub.' },
-        longDesc: { pt: 'Plataforma para a ilustradora Anne apresentar seu trabalho e receber comissões: galeria de artes em layout responsivo, construtor de pedidos que calcula o valor da comissão em tempo real conforme o estilo (cartoon ou chibi) e as opções escolhidas, e uma página dedicada à webcomic "Finn, o Anti-Herói" com capa, perfis de personagens e links para as plataformas de leitura. O conteúdo (preços, galeria, links e dados da HQ) fica no Supabase (PostgreSQL + storage, com Row Level Security), permitindo edição por um painel administrativo sem mexer no código. Front-end em HTML/CSS/JS puro com suporte a tema claro/escuro, hospedado na Vercel sem build step.', en: 'A platform for illustrator Anne to showcase her work and take commissions: a responsive artwork gallery, an order builder that calculates the commission price in real time based on the chosen style (cartoon or chibi) and selected options, and a dedicated page for the webcomic "Finn, the Anti-Hero" with cover art, character profiles and links to reading platforms. Content (prices, gallery, links and comic data) lives in Supabase (PostgreSQL + storage, with Row Level Security), enabling edits through an admin panel without touching code. Vanilla HTML/CSS/JS front-end with light/dark theme support, hosted on Vercel with no build step.' },
+        shortDesc: { pt: 'Site de portfólio e encomendas para uma ilustradora, com calculadora de orçamento, página da webcomic e painel administrativo.', en: 'Portfolio and commissions site for an illustrator, with a quote calculator, a webcomic page and an admin panel.' },
+        longDesc: { pt: 'Plataforma para a ilustradora Anne apresentar seu trabalho e receber encomendas. A página inicial reúne central de links, avatar e galeria. A calculadora monta um pedido com vários itens (personagens ou cenários), combina estilo, enquadramento e acabamento, aplica desconto por volume e mostra faixa de preço quando há cenário; o pedido fecha direto pelo WhatsApp ou pela DM do Instagram. Uma página dedicada à webcomic "Fim Anti-Herói" traz sinopse, personagens, galeria e links de leitura. Todo o conteúdo fica no Supabase (Postgres, Storage e Auth, com Row Level Security) e é editado por um painel administrativo com login, onde a Anne altera preços, cenários, galeria, links, personagens e até o fundo do site. Front-end em HTML/CSS/JS puro, com tema claro/escuro, hospedado na Vercel sem build step.', en: 'A platform for illustrator Anne to showcase her work and take commissions. The home page gathers a link hub, avatar and gallery. The calculator builds a multi-item order (characters or backgrounds), combining style, framing and finish, applying volume discounts and showing a price range when backgrounds are included; the order is sent straight to WhatsApp or Instagram DM. A dedicated page for the webcomic "Fim Anti-Herói" features the synopsis, characters, gallery and reading links. All content lives in Supabase (Postgres, Storage and Auth, with Row Level Security) and is edited through a login-protected admin panel where Anne manages prices, backgrounds, gallery, links, characters and even the site background. Vanilla HTML/CSS/JS front-end with light/dark theme, hosted on Vercel with no build step.' },
         links: [{ label: 'Live MVP', url: 'https://anne-ilustradora.vercel.app/' }],
+      },
+      {
+        id: 5, title: 'Casa Nossa Imobiliária', badge: '',
+        tags: ['React', 'Supabase', 'Vercel'],
+        shortDesc: { pt: 'Site de imobiliária com catálogo de imóveis para compra, venda e aluguel, com filtros de busca.', en: 'Real estate agency website with a property catalog for buying, selling and renting, plus search filters.' },
+        longDesc: { pt: 'Modelo de site para imobiliárias: catálogo de imóveis para compra, venda e aluguel com filtros avançados de busca, apresentação dos serviços da imobiliária (como avaliação técnica de imóveis) e foco em atendimento próximo ao cliente. Construído com React e Supabase e hospedado na Vercel, serve como vitrine para oferecer o serviço a imobiliárias locais.', en: 'A website template for real estate agencies: a property catalog for buying, selling and renting with advanced search filters, a presentation of the agency services (such as technical property appraisal) and a focus on close customer service. Built with React and Supabase and hosted on Vercel, it works as a showcase to offer the service to local agencies.' },
+        links: [{ label: 'Live Demo', url: 'https://template-site-imobiliaria.vercel.app/' }],
+      },
+      {
+        id: 6, title: 'Barbearia Clube', badge: '',
+        tags: ['Vercel'],
+        shortDesc: { pt: 'Site de barbearia no modelo de clube de assinatura, com corte e barba ilimitados.', en: 'Barbershop website built around a subscription club with unlimited haircuts and beard trims.' },
+        longDesc: { pt: 'Modelo de site para barbearias que trabalham com assinatura mensal: apresenta o clube com corte e barba ilimitados, a equipe de profissionais e as unidades da rede. Hospedado na Vercel, serve como vitrine para oferecer o serviço a barbearias da região.', en: 'A website template for barbershops running a monthly subscription: it presents the club with unlimited haircuts and beard trims, the professional team and the shop locations. Hosted on Vercel, it works as a showcase to offer the service to local barbershops.' },
+        links: [{ label: 'Live Demo', url: 'https://template-site-barbearia-wellingtons-projects-cebf7f37.vercel.app/' }],
       },
     ],
     certifications: [
@@ -87,6 +108,14 @@
       },
     ],
     career: [
+      {
+        id: 3, company: 'ILYSYN Systems',
+        role: { pt: 'Desenvolvedor — Período de Avaliação', en: 'Developer — Trial Period' },
+        period: { pt: 'Set 2026 — Presente', en: 'Sep 2026 — Present' },
+        shortDesc: { pt: 'Período de avaliação de 3 meses para contratação como desenvolvedor: desenvolvimento assistido por IA e prospecção de clientes.', en: '3-month trial period toward a developer position: AI-assisted development and client prospecting.' },
+        description: { pt: 'Desenvolvimento de sistemas e sites, prospecção de clientes no mercado dos EUA e participação em análises técnicas, seguindo boas práticas de engenharia de software com apoio de IA.' },
+        achievements: { pt: ['Desenvolvimento com IA', 'Front-end', 'Prospecção Outbound'], en: ['AI-Assisted Development', 'Front-end', 'Outbound Prospecting'] },
+      },
       {
         id: 1, company: 'Prefeitura de Ariquemes',
         role: { pt: 'Estagiário de TI', en: 'IT Intern' },
@@ -121,6 +150,7 @@
       mStart: 'INÍCIO', mEnd: 'CONCLUSÃO', mHours: 'CARGA HORÁRIA', mInst: 'INSTITUIÇÃO',
       modalProject: '◈ ARTEFATO', modalCareer: '◈ REGISTRO DE CARREIRA',
       footer: '© 2026 WELLINGTON PEREIRA LUIZ. TODOS OS DIREITOS RESERVADOS.',
+      emailCopied: 'E-mail copiado: ', emailCopyFail: 'Meu e-mail: ',
     },
     en: {
       nav: { sobre: 'ABOUT', carreira: 'CAREER', projetos: 'PROJECTS', certificacoes: 'CERTIFICATIONS' },
@@ -136,6 +166,7 @@
       mStart: 'START', mEnd: 'END', mHours: 'TOTAL HOURS', mInst: 'INSTITUTION',
       modalProject: '◈ ARTIFACT', modalCareer: '◈ CAREER RECORD',
       footer: '© 2026 WELLINGTON PEREIRA LUIZ. ALL RIGHTS RESERVED.',
+      emailCopied: 'Email copied: ', emailCopyFail: 'My email: ',
     },
   };
 
@@ -153,7 +184,11 @@
   function loadData() {
     try {
       const raw = JSON.parse(localStorage.getItem('wl_portfolio_data'));
-      if (raw) return raw;
+      // fill fields added to PORTFOLIO_DATA after this copy was saved
+      if (raw) {
+        const defaults = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
+        return { ...defaults, ...raw, personal: { ...defaults.personal, ...raw.personal } };
+      }
     } catch (e) {}
     return JSON.parse(JSON.stringify(PORTFOLIO_DATA));
   }
@@ -271,7 +306,7 @@
             <div class="hero-cta" data-reveal>
               <button class="btn-solid" data-action="goto" data-id="projetos">${esc(t.ctaProjects)}</button>
               <a class="btn-outline" href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">GITHUB</a>
-              <a class="btn-outline" href="${esc(p.linkedin)}" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+              <a class="btn-outline" href="mailto:${esc(p.email)}" data-action="email">E-MAIL</a>
             </div>
           </div>
           <div class="hero-panel" data-reveal>
@@ -453,7 +488,7 @@
       <div class="footer-copy">${esc(t.footer)}</div>
       <div class="footer-links">
         <a href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">GITHUB</a>
-        <a href="${esc(p.linkedin)}" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+        <a href="mailto:${esc(p.email)}" data-action="email">${esc(p.email)}</a>
       </div>
     </footer>`;
   }
@@ -707,7 +742,7 @@
       { field: 'quote_pt', label: 'CITAÇÃO (PT)', value: p.quote.pt, area: false },
       { field: 'quote_en', label: 'CITAÇÃO (EN)', value: p.quote.en, area: false },
       { field: 'github', label: 'GITHUB (URL)', value: p.github, area: false },
-      { field: 'linkedin', label: 'LINKEDIN (URL)', value: p.linkedin, area: false },
+      { field: 'email', label: 'E-MAIL', value: p.email, area: false },
     ];
     const fieldsHtml = fields.map((f) => `
       <div class="forge-field ${f.area ? 'span-full' : ''}">
@@ -816,12 +851,20 @@
 
   function forgeCopy() {
     const block = '// Gerado pela Forja — cole no lugar do PORTFOLIO_DATA em js/app.js\nconst PORTFOLIO_DATA = ' + JSON.stringify(state.data, null, 2) + ';\n';
-    const done = () => showToast('PORTFOLIO_DATA copiado para a área de transferência.');
-    const fail = () => showToast('Não foi possível copiar automaticamente.');
+    copyText(block, 'PORTFOLIO_DATA copiado para a área de transferência.', 'Não foi possível copiar automaticamente.');
+  }
+  function copyEmail() {
+    const t = LABELS[state.lang] || LABELS.pt;
+    const email = state.data.personal.email;
+    copyText(email, t.emailCopied + email, t.emailCopyFail + email);
+  }
+  function copyText(text, okMsg, failMsg) {
+    const done = () => showToast(okMsg);
+    const fail = () => showToast(failMsg);
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(block).then(done, () => (copyFallback(block) ? done() : fail()));
+      navigator.clipboard.writeText(text).then(done, () => (copyFallback(text) ? done() : fail()));
     } else {
-      copyFallback(block) ? done() : fail();
+      copyFallback(text) ? done() : fail();
     }
   }
   function copyFallback(text) {
@@ -875,6 +918,7 @@
 
     switch (action) {
       case 'goto': goto(id); break;
+      case 'email': copyEmail(); break; // mailto still opens; copy covers visitors without a mail app
       case 'lang': setLang(target.dataset.lang); break;
       case 'open-job': openJobModal(id); break;
       case 'open-project': openProjectModal(id); break;
