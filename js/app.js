@@ -343,7 +343,7 @@
 
   function renderNav(t) {
     const navLinks = SECTION_IDS.map((id) =>
-      `<a data-action="goto" data-id="${id}" data-nav-id="${id}">${esc(t.nav[id])}</a>`
+      `<a href="#${id}" data-action="goto" data-id="${id}" data-nav-id="${id}">${esc(t.nav[id])}</a>`
     ).join('');
     return `
     <nav class="navbar">
@@ -449,7 +449,7 @@
     const items = data.career.map((job) => {
       const chips = (job.achievements && (job.achievements[state.lang] || job.achievements.pt)) || [];
       return `
-      <div class="job-card" data-reveal data-action="open-job" data-id="${job.id}">
+      <div class="job-card" data-reveal data-action="open-job" data-id="${esc(job.id)}" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="job-dot"></div>
         <div class="job-period">${esc(tr(job.period, state.lang))}</div>
         <div class="job-role">${esc(tr(job.role, state.lang))}</div>
@@ -481,7 +481,7 @@
       const n = String(i + 1).padStart(2, '0');
       const badge = pj.badge ? `<span class="project-badge">${esc(pj.badge)}</span>` : '';
       return `
-      <div class="project-card" data-reveal data-action="open-project" data-id="${pj.id}">
+      <div class="project-card" data-reveal data-action="open-project" data-id="${esc(pj.id)}" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="project-topline"></div>
         <div class="project-index" aria-hidden="true">${n}</div>
         <div class="project-kicker">◆ Nº ${n}</div>
@@ -520,16 +520,16 @@
         `<a class="cert-link" href="${esc(lk.url)}" target="_blank" rel="noopener noreferrer">${esc(lk.label)} ↗</a>`
       ).join('');
       return `
-      <div class="cert-card" data-reveal data-cert-id="${c.id}">
+      <div class="cert-card" data-reveal data-cert-id="${esc(c.id)}">
         <div class="cert-topline"></div>
-        <div class="cert-head" data-action="toggle-cert" data-id="${c.id}">
+        <div class="cert-head" data-action="toggle-cert" data-id="${esc(c.id)}" role="button" tabindex="0" aria-expanded="false" aria-controls="cert-body-${esc(c.id)}">
           <div>
             <div class="cert-name">${esc(c.name)}</div>
             <div class="cert-issuer">${esc(c.issuer)}</div>
           </div>
           <div class="cert-chev">+</div>
         </div>
-        <div class="cert-collapse">
+        <div class="cert-collapse" id="cert-body-${esc(c.id)}">
           <div class="cert-body">
             <div class="cert-line"></div>
             <div class="cert-desc">${esc(tr(c.description, state.lang))}</div>
@@ -596,20 +596,22 @@
   // ────────────────────────────────────────────────────────────────────────
   // Certification accordion
   // ────────────────────────────────────────────────────────────────────────
-  function setCertHeight(id, open) {
+  function setCertOpen(id, open) {
     const card = document.querySelector(`.cert-card[data-cert-id="${CSS.escape(String(id))}"]`);
     if (!card) return;
     const collapse = card.querySelector('.cert-collapse');
     const body = card.querySelector('.cert-body');
+    card.classList.toggle('open', open);
+    card.querySelector('.cert-head').setAttribute('aria-expanded', String(open));
     collapse.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
+    // keep links in a closed card out of the Tab order
+    collapse.inert = !open;
   }
 
   function initCertHeights() {
     document.querySelectorAll('.cert-card').forEach((card) => {
       const id = card.getAttribute('data-cert-id');
-      const isOpen = String(state.openCert) === id;
-      card.classList.toggle('open', isOpen);
-      setCertHeight(id, isOpen);
+      setCertOpen(id, String(state.openCert) === id);
     });
   }
 
@@ -617,10 +619,8 @@
     const willOpen = String(state.openCert) !== String(id);
     const prev = state.openCert;
     state.openCert = willOpen ? id : null;
-    if (prev != null && String(prev) !== String(id)) setCertHeight(prev, false);
-    const card = document.querySelector(`.cert-card[data-cert-id="${CSS.escape(String(id))}"]`);
-    if (card) card.classList.toggle('open', willOpen);
-    setCertHeight(id, willOpen);
+    if (prev != null && String(prev) !== String(id)) setCertOpen(prev, false);
+    setCertOpen(id, willOpen);
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -654,16 +654,21 @@
     }
   }
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function scrollBehavior() {
+    return reducedMotion.matches ? 'auto' : 'smooth';
+  }
+
   function goto(id) {
     suppressSpy = true;
     clearTimeout(spyTimer);
     state.active = id;
     updateNavActive();
     if (id === 'sobre') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
     } else {
       const el = document.getElementById(id);
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: 'smooth' });
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: scrollBehavior() });
     }
     fogSurge();
     spyTimer = setTimeout(() => { suppressSpy = false; spy(); }, 1200);
@@ -683,14 +688,36 @@
   // ────────────────────────────────────────────────────────────────────────
   // Modal
   // ────────────────────────────────────────────────────────────────────────
+  let modalOpener = null;
   function openModal(m) {
+    modalOpener = document.activeElement;
     state.modal = m;
     renderModal();
+    document.querySelector('#modalRoot .modal-close').focus();
   }
   function closeModal() {
     if (!state.modal) return;
     state.modal = null;
     document.getElementById('modalRoot').innerHTML = '';
+    // return focus to the card that opened the modal
+    if (modalOpener && modalOpener.isConnected) modalOpener.focus({ preventScroll: true });
+    modalOpener = null;
+  }
+
+  // keep Tab / Shift+Tab cycling inside the open modal
+  function trapModalFocus(e) {
+    const box = document.querySelector('#modalRoot .modal-box');
+    if (!box) return;
+    const focusables = [...box.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])')];
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (!box.contains(document.activeElement)) {
+      e.preventDefault(); first.focus();
+    } else if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
   }
   function renderModal() {
     const root = document.getElementById('modalRoot');
@@ -703,13 +730,13 @@
     ).join('');
     root.innerHTML = `
       <div class="modal-overlay" data-action="close-modal-overlay">
-        <div class="modal-box">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
           <div class="modal-topline"></div>
           <div class="modal-corner modal-corner-tl"></div>
           <div class="modal-corner modal-corner-br"></div>
-          <div class="modal-close" data-action="close-modal">✕ ${esc(t.close)}</div>
+          <button type="button" class="modal-close" data-action="close-modal">✕ ${esc(t.close)}</button>
           <div class="modal-kicker">${esc(m.kicker)}</div>
-          <div class="modal-title">${esc(m.title)}</div>
+          <div class="modal-title" id="modalTitle">${esc(m.title)}</div>
           <div class="modal-line"></div>
           ${m.sub ? `<div class="modal-sub">${esc(m.sub)}</div>` : ''}
           <div class="modal-chips">${chips}</div>
@@ -995,7 +1022,7 @@
     const id = target.dataset.id;
 
     switch (action) {
-      case 'goto': goto(id); break;
+      case 'goto': e.preventDefault(); goto(id); break; // keep the URL hash unchanged
       case 'email': copyEmail(); break; // mailto still opens; copy covers visitors without a mail app
       case 'lang': setLang(target.dataset.lang); break;
       case 'open-job': openJobModal(id); break;
@@ -1013,13 +1040,19 @@
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && state.modal) closeModal();
+    if (e.key === 'Escape' && state.modal) { closeModal(); return; }
+    if (e.key === 'Tab' && state.modal) { trapModalFocus(e); return; }
+    // div-based buttons (cards, accordion headers) respond to Enter/Space like real buttons
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="button"][data-action]')) {
+      e.preventDefault();
+      e.target.click();
+    }
   });
 
   window.addEventListener('hashchange', checkHash);
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
-    if (state.openCert != null) setCertHeight(state.openCert, true);
+    if (state.openCert != null) setCertOpen(state.openCert, true);
   });
 
   // ────────────────────────────────────────────────────────────────────────
