@@ -18,7 +18,7 @@ Portfólio profissional de Wellington Luiz, desenvolvedor de software. Site est�
 index.html          shell da página
 css/style.css        todo o estilo visual
 js/app.js             dados do portfólio (PORTFOLIO_DATA), renderização e interações
-assets/img/           imagens de apoio (logo etc.)
+assets/              favicon e imagem de prévia para links (og-image.jpg)
 ```
 
 Não há build step — é HTML/CSS/JS servido diretamente.
@@ -28,7 +28,7 @@ Não há build step — é HTML/CSS/JS servido diretamente.
 Duas formas:
 
 1. **Direto no código**: edite o objeto `PORTFOLIO_DATA` no topo de `js/app.js` (nome, bio, stack, roadmap, projetos, certificações, carreira — cada texto aceita `{ pt, en }` para os dois idiomas).
-2. **Pela Forja** (`seusite/#forge`, senha padrão `vigilante` — troque assim que possível): um painel visual para editar os mesmos dados. As alterações feitas ali ficam salvas no `localStorage` do navegador que você estiver usando para pré-visualizar; use o botão **COPIAR PORTFOLIO_DATA** para gerar o bloco atualizado e colar de volta em `js/app.js`, depois faça commit normalmente. Não é um backend — é um editor/preview local.
+2. **Pela Forja** (`seusite/#forge`, protegida por senha): um painel visual para editar os mesmos dados. As alterações feitas ali ficam salvas no `localStorage` do navegador que você estiver usando para pré-visualizar; use o botão **COPIAR PORTFOLIO_DATA** para gerar o bloco atualizado e colar de volta em `js/app.js`, depois faça commit normalmente. Não é um backend — é um editor/preview local.
 
 ## Rodando localmente
 

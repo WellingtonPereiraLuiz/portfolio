@@ -459,6 +459,16 @@ section { position: relative; z-index: 1; }
 .forge-security-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .forge-security-row .forge-input { width: 260px; font: 500 12.5px var(--font-mono); }
 
+/* ── noscript fallback ── */
+.noscript {
+  position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 120px 20px;
+  display: flex; flex-direction: column; gap: 16px; font: 300 16px/1.7 var(--font-sans); color: rgba(229,226,225,.75);
+}
+.noscript h1 { margin: 0; font: 400 clamp(40px, 8vw, 64px)/1.06 var(--font-serif); color: var(--text); }
+.noscript p { margin: 0; }
+.noscript-kicker { font: 500 11px var(--font-mono); letter-spacing: .24em; color: var(--cyan); }
+.noscript-links { display: flex; flex-wrap: wrap; gap: 12px 22px; font: 500 12px var(--font-mono); }
+
 /* ── keyboard focus ── */
 :focus-visible { outline: 1px solid var(--cyan); outline-offset: 3px; }
 

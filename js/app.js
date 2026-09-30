@@ -40,14 +40,14 @@
     ],
     projects: [
       {
-        id: 7, title: 'TRIRREME', badge: 'SÓCIO-FUNDADOR',
+        id: 7, title: 'TRIRREME', badge: { pt: 'SÓCIO-FUNDADOR', en: 'CO-FOUNDER' },
         tags: ['Sistemas sob medida', 'Web', 'Automação', 'Vercel'],
         shortDesc: { pt: 'Empresa de desenvolvimento de software que fundei com dois sócios: sistemas sob medida, sites e automações para empresas.', en: 'Software development company I co-founded with two partners: custom systems, websites and automation for businesses.' },
         longDesc: { pt: 'Sou sócio-fundador da TRIRREME, empresa de tecnologia criada com dois colegas de ADS do IFRO. Desenvolvemos sistemas sob medida (gestão de pedidos e estoque em tempo real), sites e catálogos digitais integrados ao WhatsApp, automações e integrações com planilhas e ERPs, além de consultoria, suporte e hospedagem. Trabalhamos com escopo, prazo e preço fechados, metodologia em etapas e entregas quinzenais.', en: 'I am a co-founder of TRIRREME, a tech company started with two fellow Systems Analysis students from IFRO. We build custom systems (real-time order and inventory management), websites and digital catalogs integrated with WhatsApp, automations and integrations with spreadsheets and ERPs, plus consulting, support and hosting. We work with fixed scope, timeline and price, a staged methodology and bi-weekly deliveries.' },
         links: [{ label: 'Site', url: 'https://trirreme.com/' }],
       },
       {
-        id: 3, title: 'CustoDoce', badge: '1º LUGAR — HACKATHON IFRO',
+        id: 3, title: 'CustoDoce', badge: { pt: '1º LUGAR — HACKATHON IFRO', en: '1ST PLACE — IFRO HACKATHON' },
         tags: ['Flutter', 'Dart', 'Firebase', 'Riverpod', 'SQLite'],
         shortDesc: { pt: 'Calculadora de custos definitiva para confeiteiros e padeiros artesanais.', en: 'The definitive cost calculator for artisanal bakers and confectioners.' },
         longDesc: { pt: 'Aplicativo multiplataforma (Android e Web) que resolve a precificação artesanal de ponta a ponta: cadastro de ingredientes, receitas inteligentes com cálculo em tempo real, gestão de custos invisíveis e assistente de IA integrado (Google Gemini). 1º Lugar na categoria "Desafio Livre de Impacto Regional" na Hackathon Extensionista IFRO Ariquemes 2026/1.', en: 'Cross-platform app (Android and Web) that solves artisanal pricing end to end: ingredient registry, smart recipes with real-time cost calculation, hidden-cost management and an integrated AI assistant (Google Gemini). 1st place in the "Regional Impact Open Challenge" at the IFRO Ariquemes Extension Hackathon 2026/1.' },
@@ -91,19 +91,25 @@
     ],
     certifications: [
       {
-        id: 1, name: '1º Lugar — Hackathon Extensionista IFRO Ariquemes 2026/1',
-        issuer: 'IFRO Campus Ariquemes (Categoria: Impacto Regional)',
+        id: 1,
+        name: { pt: '1º Lugar — Hackathon Extensionista IFRO Ariquemes 2026/1', en: '1st Place — IFRO Ariquemes Extension Hackathon 2026/1' },
+        issuer: { pt: 'IFRO Campus Ariquemes (Categoria: Impacto Regional)', en: 'IFRO Ariquemes Campus (Category: Regional Impact)' },
         description: { pt: 'Participação e vitória na Hackathon Extensionista IFRO 2026/1 com a equipe CoreMetrics. O evento focou em soluções tecnológicas para problemas reais da região, unindo IFRO, Sebrae e comunidade. Desenvolvemos o CustoDoce, app de precificação para microempreendedores, conquistando o 1º Lugar na categoria "Desafio Livre de Impacto Regional" com um MVP funcional e uso documentado de IA.', en: 'Victory with team CoreMetrics at the IFRO 2026/1 Extension Hackathon, focused on tech solutions for real regional problems together with IFRO, Sebrae and the community. We built CustoDoce, a pricing app for micro-entrepreneurs, winning 1st place in the "Regional Impact Open Challenge" with a working MVP and documented use of AI.' },
-        startDate: 'Semestre 2026/1', endDate: 'Culminância 2026/1', hours: 40,
-        institution: 'Centro de Empreendedorismo e Inovação — IFRO Ariquemes',
+        startDate: { pt: 'Semestre 2026/1', en: 'Semester 2026/1' },
+        endDate: { pt: 'Culminância 2026/1', en: 'Final showcase 2026/1' },
+        hours: 40,
+        institution: { pt: 'Centro de Empreendedorismo e Inovação — IFRO Ariquemes', en: 'Entrepreneurship and Innovation Center — IFRO Ariquemes' },
         links: [{ label: 'MVP CustoDoce', url: 'https://custodoce-b07ce.web.app' }, { label: 'GitHub', url: 'https://github.com/WellingtonPereiraLuiz/CustoDoce' }, { label: 'Edital', url: 'https://hackathon-ifro.bolt.host/' }],
       },
       {
-        id: 2, name: 'IV Webinar de Empreendedorismo, Ciência, Inovação e Tecnologia (WECIT)',
-        issuer: 'Instituto Federal de Rondônia — Campus Ariquemes',
+        id: 2,
+        name: { pt: 'IV Webinar de Empreendedorismo, Ciência, Inovação e Tecnologia (WECIT)', en: '4th Webinar on Entrepreneurship, Science, Innovation and Technology (WECIT)' },
+        issuer: { pt: 'Instituto Federal de Rondônia — Campus Ariquemes', en: 'Federal Institute of Rondônia — Ariquemes Campus' },
         description: { pt: 'Participação e apresentação de projeto no IV WECIT 2025, evento que discutiu Cidades Inteligentes sob a ótica da tecnologia e inovação. Envolveu a apresentação de trabalhos dos acadêmicos de ADS (Curricularização da Extensão), conectando teoria a demandas reais da comunidade e do mercado. Concluído com êxito em dezembro de 2025.', en: 'Participation and project presentation at IV WECIT 2025, discussing Smart Cities through the lens of technology and innovation. Involved presenting work built by Systems Analysis students, connecting classroom theory to real community and market demands. Successfully concluded in December 2025.' },
-        startDate: '09 Dez 2025', endDate: '11 Dez 2025', hours: 20,
-        institution: 'IFRO Campus Ariquemes (Transmissão via YouTube)',
+        startDate: { pt: '09 Dez 2025', en: 'Dec 09, 2025' },
+        endDate: { pt: '11 Dez 2025', en: 'Dec 11, 2025' },
+        hours: 20,
+        institution: { pt: 'IFRO Campus Ariquemes (Transmissão via YouTube)', en: 'IFRO Ariquemes Campus (streamed on YouTube)' },
         links: [{ label: 'Site WECIT', url: 'http://www.wecit.com.br' }],
       },
     ],
@@ -113,7 +119,7 @@
         role: { pt: 'Desenvolvedor — Período de Avaliação', en: 'Developer — Trial Period' },
         period: { pt: 'Set 2026 — Presente', en: 'Sep 2026 — Present' },
         shortDesc: { pt: 'Período de avaliação de 3 meses para contratação como desenvolvedor: desenvolvimento assistido por IA e prospecção de clientes.', en: '3-month trial period toward a developer position: AI-assisted development and client prospecting.' },
-        description: { pt: 'Desenvolvimento de sistemas e sites, prospecção de clientes no mercado dos EUA e participação em análises técnicas, seguindo boas práticas de engenharia de software com apoio de IA.' },
+        description: { pt: 'Desenvolvimento de sistemas e sites, prospecção de clientes no mercado dos EUA e participação em análises técnicas, seguindo boas práticas de engenharia de software com apoio de IA.', en: 'Development of systems and websites, client prospecting in the US market and participation in technical reviews, following software engineering best practices with AI support.' },
         achievements: { pt: ['Desenvolvimento com IA', 'Front-end', 'Prospecção Outbound'], en: ['AI-Assisted Development', 'Front-end', 'Outbound Prospecting'] },
       },
       {
@@ -217,9 +223,9 @@
     const itemChecks = {
       techStack: (g) => isText(g.category) && isStrList(g.items),
       roadmap: (r) => isText(r.title) && isText(r.desc),
-      projects: (x) => x.id != null && typeof x.title === 'string' && isStrList(x.tags)
+      projects: (x) => x.id != null && typeof x.title === 'string' && isStrList(x.tags) && (!x.badge || isText(x.badge))
         && isText(x.shortDesc) && isText(x.longDesc) && isLinks(x.links),
-      certifications: (c) => c.id != null && typeof c.name === 'string' && isText(c.description) && isLinks(c.links),
+      certifications: (c) => c.id != null && isText(c.name) && isText(c.description) && isLinks(c.links),
       career: (j) => j.id != null && typeof j.company === 'string' && isText(j.role) && isText(j.period)
         && isText(j.shortDesc) && isText(j.description) && isChips(j.achievements),
     };
@@ -479,7 +485,8 @@
   function renderProjects(t, data) {
     const items = data.projects.map((pj, i) => {
       const n = String(i + 1).padStart(2, '0');
-      const badge = pj.badge ? `<span class="project-badge">${esc(pj.badge)}</span>` : '';
+      const badgeText = tr(pj.badge, state.lang);
+      const badge = badgeText ? `<span class="project-badge">${esc(badgeText)}</span>` : '';
       return `
       <div class="project-card" data-reveal data-action="open-project" data-id="${esc(pj.id)}" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="project-topline"></div>
@@ -511,10 +518,10 @@
   function renderCertifications(t, data) {
     const items = data.certifications.map((c) => {
       const metas = [
-        { label: t.mStart, value: c.startDate },
-        { label: t.mEnd, value: c.endDate },
+        { label: t.mStart, value: tr(c.startDate, state.lang) },
+        { label: t.mEnd, value: tr(c.endDate, state.lang) },
         { label: t.mHours, value: c.hours + 'h' },
-        { label: t.mInst, value: c.institution },
+        { label: t.mInst, value: tr(c.institution, state.lang) },
       ];
       const links = (c.links || []).map((lk) =>
         `<a class="cert-link" href="${esc(lk.url)}" target="_blank" rel="noopener noreferrer">${esc(lk.label)} ↗</a>`
@@ -524,8 +531,8 @@
         <div class="cert-topline"></div>
         <div class="cert-head" data-action="toggle-cert" data-id="${esc(c.id)}" role="button" tabindex="0" aria-expanded="false" aria-controls="cert-body-${esc(c.id)}">
           <div>
-            <div class="cert-name">${esc(c.name)}</div>
-            <div class="cert-issuer">${esc(c.issuer)}</div>
+            <div class="cert-name">${esc(tr(c.name, state.lang))}</div>
+            <div class="cert-issuer">${esc(tr(c.issuer, state.lang))}</div>
           </div>
           <div class="cert-chev">+</div>
         </div>
@@ -668,7 +675,9 @@
       window.scrollTo({ top: 0, behavior: scrollBehavior() });
     } else {
       const el = document.getElementById(id);
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: scrollBehavior() });
+      // stop just below the fixed navbar, whose height changes on phones (two rows)
+      const navHeight = document.querySelector('.navbar').offsetHeight;
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navHeight - 12, behavior: scrollBehavior() });
     }
     fogSurge();
     spyTimer = setTimeout(() => { suppressSpy = false; spy(); }, 1200);
@@ -795,8 +804,8 @@
   const ADMIN_SECTIONS = [
     { key: 'techStack', label: 'ARSENAL TÉCNICO (JSON)', hint: 'Lista de grupos: { category: {pt,en}, items: ["..."] }' },
     { key: 'roadmap', label: 'ROTA DE ASCENSÃO (JSON)', hint: 'Lista de metas: { title: {pt,en}, desc: {pt,en} }' },
-    { key: 'projects', label: 'PROJETOS (JSON)', hint: 'Campos: id, title, badge, tags[], shortDesc{pt,en}, longDesc{pt,en}, links[{label,url}]' },
-    { key: 'certifications', label: 'CERTIFICAÇÕES (JSON)', hint: 'Campos: id, name, issuer, description{pt,en}, startDate, endDate, hours, institution, links[]' },
+    { key: 'projects', label: 'PROJETOS (JSON)', hint: 'Campos: id, title, badge ("texto" ou {pt,en}), tags[], shortDesc{pt,en}, longDesc{pt,en}, links[{label,url}]' },
+    { key: 'certifications', label: 'CERTIFICAÇÕES (JSON)', hint: 'Campos: id, name, issuer, description{pt,en}, startDate, endDate, hours, institution, links[] — textos aceitam "texto" ou {pt,en}' },
     { key: 'career', label: 'CARREIRA (JSON)', hint: 'Campos: id, role{pt,en}, company, period{pt,en}, shortDesc{pt,en}, description{pt,en}, achievements{pt[],en[]}' },
   ];
 
