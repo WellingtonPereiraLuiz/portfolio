@@ -181,26 +181,80 @@
   function tr(v, lang) {
     return (v && typeof v === 'object' && !Array.isArray(v)) ? (v[lang] ?? v.pt ?? '') : (v ?? '');
   }
-  function loadData() {
-    try {
-      const raw = JSON.parse(localStorage.getItem('wl_portfolio_data'));
-      // fill fields added to PORTFOLIO_DATA after this copy was saved
-      if (raw) {
-        const defaults = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
-        return { ...defaults, ...raw, personal: { ...defaults.personal, ...raw.personal } };
-      }
-    } catch (e) {}
+  // localStorage throws when storage is blocked (private mode, disabled cookies)
+  function storeGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function storeSet(key, value) {
+    try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
+  }
+  function storeRemove(key) {
+    try { localStorage.removeItem(key); } catch (e) {}
+  }
+
+  const DATA_KEY = 'wl_portfolio_data';
+  function defaultData() {
     return JSON.parse(JSON.stringify(PORTFOLIO_DATA));
   }
+
+  const isObj = (v) => v != null && typeof v === 'object' && !Array.isArray(v);
+  const isText = (v) => typeof v === 'string' || (isObj(v) && typeof v.pt === 'string');
+  const isStrList = (v) => Array.isArray(v) && v.every((s) => typeof s === 'string');
+  const isLinks = (v) => v === undefined || (Array.isArray(v) && v.every((l) => isObj(l) && typeof l.url === 'string'));
+  const isChips = (v) => v === undefined || (isObj(v) && isStrList(v.pt) && (v.en === undefined || isStrList(v.en)));
+
+  // Returns '' when the data has the shape the renderers expect, else a description of the first problem.
+  function dataError(d) {
+    if (!isObj(d)) return 'os dados não são um objeto';
+    const p = d.personal;
+    if (!isObj(p)) return '"personal" ausente';
+    for (const k of ['name', 'location', 'github', 'email']) {
+      if (typeof p[k] !== 'string') return `personal.${k} deve ser texto`;
+    }
+    for (const k of ['title', 'bio', 'education', 'languages', 'quote']) {
+      if (!isText(p[k])) return `personal.${k} deve ser texto ou { pt, en }`;
+    }
+    const itemChecks = {
+      techStack: (g) => isText(g.category) && isStrList(g.items),
+      roadmap: (r) => isText(r.title) && isText(r.desc),
+      projects: (x) => x.id != null && typeof x.title === 'string' && isStrList(x.tags)
+        && isText(x.shortDesc) && isText(x.longDesc) && isLinks(x.links),
+      certifications: (c) => c.id != null && typeof c.name === 'string' && isText(c.description) && isLinks(c.links),
+      career: (j) => j.id != null && typeof j.company === 'string' && isText(j.role) && isText(j.period)
+        && isText(j.shortDesc) && isText(j.description) && isChips(j.achievements),
+    };
+    for (const [key, ok] of Object.entries(itemChecks)) {
+      if (!Array.isArray(d[key])) return `"${key}" deve ser uma lista`;
+      const bad = d[key].findIndex((item) => !isObj(item) || !ok(item));
+      if (bad !== -1) return `${key}[${bad}] tem campos faltando ou com formato errado`;
+    }
+    return '';
+  }
+
+  function loadData() {
+    let raw = null;
+    try { raw = JSON.parse(storeGet(DATA_KEY)); } catch (e) {}
+    if (!raw) return defaultData();
+    // fill fields added to PORTFOLIO_DATA after this copy was saved
+    const defaults = defaultData();
+    const merged = { ...defaults, ...raw, personal: { ...defaults.personal, ...raw.personal } };
+    const err = dataError(merged);
+    if (err) {
+      console.warn('Dados salvos no navegador descartados:', err);
+      storeRemove(DATA_KEY);
+      return defaults;
+    }
+    return merged;
+  }
   function saveData(data) {
-    try { localStorage.setItem('wl_portfolio_data', JSON.stringify(data)); } catch (e) {}
+    return storeSet(DATA_KEY, JSON.stringify(data));
   }
 
   // ────────────────────────────────────────────────────────────────────────
   // State
   // ────────────────────────────────────────────────────────────────────────
   const state = {
-    lang: localStorage.getItem('wl_lang') || DEFAULT_LANG,
+    lang: ['pt', 'en'].includes(storeGet('wl_lang')) ? storeGet('wl_lang') : DEFAULT_LANG,
     active: 'sobre',
     data: loadData(),
     modal: null,
@@ -252,7 +306,21 @@
   // ────────────────────────────────────────────────────────────────────────
   // Rendering: main app (nav + sections + footer)
   // ────────────────────────────────────────────────────────────────────────
+  // If saved data still breaks rendering, fall back to PORTFOLIO_DATA so the page
+  // (and the editor at #forge) never ends up blank.
   function renderApp() {
+    try {
+      renderPage();
+    } catch (err) {
+      console.error('Falha ao renderizar os dados salvos; voltando aos dados padrão.', err);
+      storeRemove(DATA_KEY);
+      state.data = defaultData();
+      renderPage();
+    }
+  }
+
+  function renderPage() {
+    document.documentElement.lang = state.lang === 'en' ? 'en' : 'pt-BR';
     const t = LABELS[state.lang] || LABELS.pt;
     const data = state.data;
     const p = data.personal;
@@ -283,12 +351,17 @@
       <div class="navbar-right">
         <div class="navbar-nav">${navLinks}</div>
         <div class="navbar-lang">
-          <button data-action="lang" data-lang="pt" data-lang-btn="pt">PT</button>
+          ${langButton('pt')}
           <span>·</span>
-          <button data-action="lang" data-lang="en" data-lang-btn="en">EN</button>
+          ${langButton('en')}
         </div>
       </div>
     </nav>`;
+  }
+
+  function langButton(lang) {
+    const on = state.lang === lang;
+    return `<button class="${on ? 'active' : ''}" aria-pressed="${on}" data-action="lang" data-lang="${lang}">${lang.toUpperCase()}</button>`;
   }
 
   function renderHero(t, p, heroBioShort) {
@@ -601,7 +674,7 @@
   // ────────────────────────────────────────────────────────────────────────
   function setLang(lang) {
     if (lang !== 'pt' && lang !== 'en') return;
-    localStorage.setItem('wl_lang', lang);
+    storeSet('wl_lang', lang);
     state.lang = lang;
     closeModal();
     renderApp();
@@ -683,7 +756,7 @@
   // ────────────────────────────────────────────────────────────────────────
   // Forge (hidden admin at #forge)
   // ────────────────────────────────────────────────────────────────────────
-  function passKey() { return localStorage.getItem('wl_forge_pass') || FORGE_DEFAULT_PASS; }
+  function passKey() { return storeGet('wl_forge_pass') || FORGE_DEFAULT_PASS; }
 
   function checkHash() {
     const forge = window.location.hash === '#forge';
@@ -841,12 +914,16 @@
         return;
       }
     }
-    saveData(data);
+    const err = dataError(data);
+    if (err) { showToast('Não salvo: ' + err + '.'); return; }
+    const saved = saveData(data);
     adminEdits = {}; adminJsonEdits = {};
     state.data = data;
     renderApp();
     renderForge();
-    showToast('Salvo. O portfólio já reflete as alterações.');
+    showToast(saved
+      ? 'Salvo. O portfólio já reflete as alterações.'
+      : 'Aplicado, mas o navegador bloqueou o armazenamento: some ao recarregar.');
   }
 
   function forgeCopy() {
@@ -891,8 +968,8 @@
 
   function forgeReset() {
     if (!window.confirm('Restaurar todos os dados para o padrão do repositório?')) return;
-    localStorage.removeItem('wl_portfolio_data');
-    state.data = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
+    storeRemove(DATA_KEY);
+    state.data = defaultData();
     renderApp();
     renderForge();
     showToast('Dados restaurados.');
@@ -900,8 +977,9 @@
 
   function forgeChangePass() {
     if (!newPass || newPass.length < 4) { showToast('Senha muito curta (mín. 4 caracteres)'); return; }
-    localStorage.setItem('wl_forge_pass', newPass);
-    showToast('Senha alterada.');
+    showToast(storeSet('wl_forge_pass', newPass)
+      ? 'Senha alterada.'
+      : 'O navegador bloqueou o armazenamento; a senha não foi alterada.');
   }
 
   // ────────────────────────────────────────────────────────────────────────
