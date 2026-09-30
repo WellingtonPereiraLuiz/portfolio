@@ -7,8 +7,8 @@
 //
 // Enquanto os dois valores estiverem vazios, o site usa o PORTFOLIO_DATA do
 // js/app.js e o painel mostra como configurar.
-const SUPABASE_URL = '';       // ex.: 'https://abcdefghijkl.supabase.co'
-const SUPABASE_ANON_KEY = '';  // ex.: 'sb_publishable_...'
+const SUPABASE_URL = 'https://dkixhpvevpabihsqcncf.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Hrz2ml34o3HIWuSMPyt1mA_bIBG1JfJ';
 
 function supabaseConfigured() {
   return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
