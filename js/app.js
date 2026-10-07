@@ -295,6 +295,7 @@
     initReveal();
     initCertHeights();
     updateNavActive();
+    heroDrift(); // a re-render (language switch) keeps the hero where the scroll left it
   }
 
   function renderNav(t) {
@@ -330,7 +331,7 @@
         <div class="hero-content">
           <div class="hero-main">
             <div class="hero-kicker" data-reveal>${esc(t.heroKicker)}</div>
-            <div class="hero-name" data-reveal>${esc(p.name)}</div>
+            <div class="hero-name" data-reveal>${splitName(p.name)}</div>
             <div class="hero-bio" data-reveal>${esc(heroBioShort)}</div>
             <div class="hero-cta" data-reveal>
               <button class="btn-solid" data-action="goto" data-id="projetos">${esc(t.ctaProjects)}</button>
@@ -355,6 +356,16 @@
         <div class="corner corner-br"></div>
       </div>
   `;
+  }
+
+  // One span per letter for the opening "focus pull". Screen readers get the plain
+  // name; words stay unbreakable so the name only wraps between words.
+  function splitName(name) {
+    let i = 0;
+    const words = String(name || '').split(' ').filter(Boolean).map((w) =>
+      `<span class="hn-word">${[...w].map((ch) => `<span class="hn-ch" style="--i:${i++}">${esc(ch)}</span>`).join('')}</span>`
+    );
+    return `<span class="sr-only">${esc(name)}</span><span aria-hidden="true">${words.join(' ')}</span>`;
   }
 
   function renderAbout(t, data, p, bioFull) {
@@ -595,6 +606,29 @@
     }
   }
 
+  // cinematic depth: while leaving the hero, its content lags behind and fades,
+  // and the big "W" watermark moves at its own speed (transform/opacity only)
+  function heroDrift() {
+    if (reducedMotion.matches) return;
+    const hero = document.querySelector('.hero');
+    const content = hero && hero.querySelector('.hero-content');
+    if (!content) return;
+    const h = hero.offsetHeight;
+    const y = Math.min(Math.max(window.scrollY, 0), h);
+    if (y >= h && content.dataset.drift === 'end') return; // already parked below the fold
+    const k = y / h;
+    // phones: the hero is taller than the screen and its info panel is still being read
+    // while scrolling, so only a light drift there, no fade
+    const phone = smallScreen.matches;
+    content.dataset.drift = y >= h ? 'end' : '';
+    content.style.transform = y ? `translate3d(0, ${(y * (phone ? 0.12 : 0.22)).toFixed(1)}px, 0)` : '';
+    content.style.opacity = y && !phone ? String(Math.max(0, 1 - k * 1.25).toFixed(3)) : '';
+    const mark = hero.querySelector('.hero-watermark');
+    if (mark) mark.style.transform = `translateY(calc(-58% + ${(y * 0.4).toFixed(1)}px))`;
+    const hint = hero.querySelector('.scroll-hint');
+    if (hint) hint.style.opacity = y ? String(Math.max(0, 1 - k * 4).toFixed(3)) : '';
+  }
+
   // phones: hide the (two-row) navbar while scrolling down, bring it back on scroll up
   const smallScreen = window.matchMedia('(max-width: 720px)');
   let lastScrollY = window.scrollY;
@@ -614,7 +648,7 @@
   let rafId;
   function onScroll() {
     if (rafId) return;
-    rafId = requestAnimationFrame(() => { rafId = null; autoHideNav(); spy(); });
+    rafId = requestAnimationFrame(() => { rafId = null; autoHideNav(); heroDrift(); spy(); });
   }
   function spy() {
     if (suppressSpy) return;
@@ -835,11 +869,34 @@
   // ────────────────────────────────────────────────────────────────────────
   // Init
   // ────────────────────────────────────────────────────────────────────────
+  // Opening shot (first load only, skipped with reduced motion): black letterbox bars
+  // wait while the content loads, then open as the hero name comes into focus.
+  function createLetterbox() {
+    if (reducedMotion.matches || window.scrollY > 40) return [];
+    return ['top', 'bottom'].map((pos) => {
+      const bar = document.createElement('div');
+      bar.className = 'letterbox letterbox-' + pos;
+      bar.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(bar);
+      return bar;
+    });
+  }
+  function playIntro(bars) {
+    if (!bars.length) return;
+    const root = document.documentElement;
+    root.classList.add('intro');
+    bars.forEach((bar) => bar.classList.add('open'));
+    setTimeout(() => bars.forEach((bar) => bar.remove()), 1600);
+    setTimeout(() => root.classList.remove('intro'), 3600); // a language switch later won't replay it
+  }
+
   buildEmbers();
+  const introBars = createLetterbox();
   const appRoot = document.getElementById('app');
   appRoot.setAttribute('aria-busy', 'true');
   loadContent().then((data) => {
     state.data = data;
+    playIntro(introBars); // class set before the first paint of the content
     renderApp();
     appRoot.removeAttribute('aria-busy');
     spy();
