@@ -15,7 +15,12 @@
 
 * { box-sizing: border-box; }
 
-html { background: var(--bg); }
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%; /* no font inflation on iOS landscape */
+}
+/* scroll lock while a modal is open (stops the page moving behind it on phones) */
+html.modal-open { overflow: hidden; }
 
 body {
   margin: 0;
@@ -25,6 +30,7 @@ body {
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent; /* custom :active feedback below instead of the grey flash */
 }
 
 a { color: var(--cyan); }
@@ -94,7 +100,10 @@ a:hover { color: var(--cyan-light); }
   padding: 0 44px; background: rgba(10,11,13,.65);
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: transform .45s cubic-bezier(.22,1,.36,1);
 }
+/* phones: the bar slides away while scrolling down and returns on scroll up (js/app.js) */
+.navbar.nav-hidden { transform: translateY(-100%); }
 .navbar-brand {
   display: flex; align-items: center; gap: 9px;
   font: 600 11.5px var(--font-mono); letter-spacing: .18em; color: var(--text); cursor: pointer;
@@ -124,7 +133,8 @@ section { position: relative; z-index: 1; }
 
 /* ── hero ── */
 .hero {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; min-height: 100svh; /* svh: ignores the phone browser bar, so the hero fits */
+  display: flex; align-items: center; justify-content: center;
   gap: 70px; padding: 110px clamp(24px, 5vw, 72px) 130px; box-sizing: border-box;
   position: relative; flex-wrap: wrap;
   overflow-x: clip; /* the oversized watermark bleeds past the right edge */
@@ -215,6 +225,7 @@ section { position: relative; z-index: 1; }
 .stack-group-title { font: 500 9.5px var(--font-mono); letter-spacing: .18em; color: rgba(229,226,225,.42); }
 .stack-items { display: flex; flex-wrap: wrap; gap: 8px; }
 .stack-chip {
+  white-space: nowrap;
   font: 500 10px var(--font-mono); letter-spacing: .1em; color: rgba(229,226,225,.78);
   border: 1px solid rgba(255,255,255,.16); padding: 7px 12px; transition: border-color .3s ease, color .3s ease;
 }
@@ -235,7 +246,9 @@ section { position: relative; z-index: 1; }
   border: 1px solid var(--panel-border); padding: 28px 34px; display: flex; flex-direction: column; gap: 10px;
   transition: border-color .4s ease, transform .4s ease;
 }
-.job-card:hover { border-color: rgba(0,219,231,.6); transform: translateX(6px); }
+@media (hover: hover) {
+  .job-card:hover { border-color: rgba(0,219,231,.6); transform: translateX(6px); }
+}
 .job-dot {
   position: absolute; left: -31px; top: 34px; width: 9px; height: 9px; background: var(--bg);
   border: 1px solid var(--cyan); box-shadow: 0 0 10px rgba(0,219,231,.5);
@@ -259,7 +272,9 @@ section { position: relative; z-index: 1; }
   padding: 26px 28px; display: flex; flex-direction: column; gap: 12px;
   transition: border-color .4s ease, transform .4s ease;
 }
-.project-card:hover { border-color: rgba(0,219,231,.6); transform: translateY(-5px); }
+@media (hover: hover) {
+  .project-card:hover { border-color: rgba(0,219,231,.6); transform: translateY(-5px); }
+}
 .project-topline {
   position: absolute; top: 0; left: 0; right: 0; height: 1px; opacity: 0;
   background: linear-gradient(90deg, transparent, rgba(0,219,231,.7), transparent);
@@ -416,28 +431,160 @@ section { position: relative; z-index: 1; }
 }
 
 /* ── responsive ── */
+
+/* tablets and phones: the about bento stacks into one column
+   (the 3-column grid squeezed the bio to one word per line) */
+@media (max-width: 860px) {
+  .bento { grid-template-columns: 1fr; }
+  .card-bio, .card-quote, .card-stack, .card-roadmap { grid-column: auto; grid-row: auto; }
+  .card-quote { padding: 26px 30px; }
+}
+
 @media (max-width: 720px) {
   /* two rows: brand + PT/EN on top, section links below */
-  .navbar { height: auto; flex-wrap: wrap; padding: 0 18px; }
-  .navbar-brand { height: 52px; }
+  .navbar {
+    height: auto; flex-wrap: wrap;
+    padding: 0 max(18px, env(safe-area-inset-right)) 0 max(18px, env(safe-area-inset-left));
+  }
+  .navbar-brand { height: 48px; }
   .navbar-right { display: contents; }
   .navbar-nav {
-    order: 1; width: 100%; height: 40px; gap: 16px; justify-content: space-between;
+    order: 1; width: 100%; height: 44px; gap: 18px; justify-content: space-between;
     overflow-x: auto; scrollbar-width: none; border-top: 1px solid rgba(255,255,255,.06);
+    scroll-behavior: smooth;
   }
   .navbar-nav::-webkit-scrollbar { display: none; }
-  .navbar-nav a { flex: none; }
-  .hero { padding: 124px 20px 110px; }
-  .corner-tl, .corner-tr { top: 108px; }
-  .corner-tl, .corner-bl { left: 18px; }
-  .corner-tr, .corner-br { right: 18px; }
-  .section-inner, .about-inner { padding-left: 20px; padding-right: 20px; }
-  .site-footer { padding: 26px 20px; }
-  .modal-box { padding: 32px 26px; }
+  /* full-height links: a 44px tall tap area instead of the 17px text line */
+  .navbar-nav a { flex: none; height: 100%; display: flex; align-items: center; padding-bottom: 0; font-size: 11px; }
+  .navbar-nav a.active { box-shadow: inset 0 -1px 0 var(--cyan); border-bottom-color: transparent; }
+  .navbar-lang { padding-left: 10px; gap: 0; }
+  .navbar-lang button { min-width: 44px; min-height: 44px; font-size: 11.5px; }
+
+  .hero { padding: 120px 20px 104px; gap: 40px; }
+  .hero-content { gap: 36px; }
+  .hero-watermark { font-size: 78vw; right: -6vw; }
+  .corner-tl, .corner-tr { top: 104px; }
+  .corner-tl, .corner-bl { left: 14px; }
+  .corner-tr, .corner-br { right: 14px; }
+  .hero-kicker { font-size: 11.5px; letter-spacing: .2em; }
+  .hero-bio { font-size: 15.5px; padding-left: 16px; }
+  /* main action full width, GitHub + E-mail side by side (no orphan button on its own row) */
+  .hero-cta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero-cta .btn-solid { grid-column: 1 / -1; }
+  .btn-solid, .btn-outline { min-height: 48px; padding: 0 16px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .hero-panel {
+    min-width: 0; max-width: none; flex-basis: 100%; gap: 6px; padding-left: 18px;
+    border-left-color: rgba(0,219,231,.25);
+  }
+  .hero-panel-label { margin-top: 8px; font-size: 10.5px; }
+  .hero-panel-label:first-child { margin-top: 0; }
+  .hero-panel-value { font-size: 14.5px; line-height: 1.45; }
+  .scroll-hint { bottom: 22px; font-size: 10px; }
+
+  .section-inner { padding: 64px 20px 72px; }
+  .about-inner { padding: 8px 20px 72px; }
+  .section-head { margin-bottom: 30px; }
+  .section-title { font-size: 34px; }
+  .section-kicker { font-size: 11px; letter-spacing: .2em; }
+
+  .card-bio, .card-stack, .card-roadmap, .card-quote { padding: 26px 22px; }
+  .card-label { font-size: 11px; }
+  .card-bio-text { font-size: 15.5px; }
+  .stack-group-title { font-size: 10.5px; }
+  .stack-chip { font-size: 11px; padding: 8px 11px; }
+
+  .timeline { padding-left: 24px; gap: 16px; }
+  .timeline-line { left: 4px; }
+  .job-dot { left: -24px; top: 30px; }
+  .job-card { padding: 24px 22px; }
+  .job-role { font-size: 22px; }
+  .job-period, .job-company { font-size: 11px; }
+  .job-short { font-size: 14.5px; }
+  .chip, .tag { font-size: 10.5px; }
+  .view-details { font-size: 11px; padding-top: 4px; }
+
+  .project-card { padding: 24px 22px; }
+  .project-kicker { font-size: 10.5px; }
+  .project-badge { font-size: 9.5px; }
+  .project-short { font-size: 14.5px; }
+
+  .cert-head { padding: 20px 20px; gap: 14px; }
+  .cert-chev { width: 44px; height: 44px; }
+  .cert-issuer { font-size: 11px; margin-top: 6px; line-height: 1.5; }
+  .cert-body { padding: 2px 20px 22px; }
+  .cert-desc { font-size: 14.5px; }
+  .cert-metas { grid-template-columns: 1fr 1fr; }
+  .cert-meta-label { font-size: 10px; }
+  .cert-link { min-height: 44px; display: inline-flex; align-items: center; font-size: 11px; }
+
+  .site-footer {
+    flex-direction: column; align-items: flex-start; gap: 6px;
+    padding: 26px max(20px, env(safe-area-inset-right)) calc(26px + env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  }
+  .footer-copy { font-size: 10.5px; line-height: 1.6; }
+  .footer-links { gap: 0 22px; }
+  .footer-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 11px; }
+
+  /* modal becomes a bottom sheet: thumb-reachable, uses the full width */
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal-box {
+    width: 100%; max-width: 100%; max-height: 88vh; max-height: 88svh;
+    padding: 0 22px calc(28px + env(safe-area-inset-bottom));
+    border-left: none; border-right: none; border-bottom: none;
+    overscroll-behavior: contain;
+    animation-name: sheetUp;
+  }
+  .modal-corner { display: none; }
+  /* close button stays reachable while the sheet scrolls */
+  .modal-close {
+    position: sticky; top: 0; align-self: stretch; justify-content: flex-end; z-index: 2;
+    margin: 0 -22px; padding: 14px 22px; min-height: 52px; font-size: 11px;
+    border: none; border-bottom: 1px solid rgba(255,255,255,.06);
+    background: rgba(14,16,19,.94);
+  }
+  .modal-title { font-size: 26px; }
+  .modal-desc { font-size: 15px; }
+  .modal-link { min-height: 48px; display: inline-flex; align-items: center; font-size: 11px; }
+  .toast { bottom: calc(22px + env(safe-area-inset-bottom)); max-width: calc(100vw - 32px); text-align: center; }
 }
 @media (max-width: 360px) {
-  .navbar-nav { gap: 8px; }
-  .navbar-nav a { letter-spacing: .06em; }
+  .navbar-nav { gap: 10px; }
+  .navbar-nav a { letter-spacing: .06em; font-size: 10.5px; }
+  .hero-cta { grid-template-columns: 1fr; }
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* touch screens: no sticky hover; a short press feedback instead */
+@media (hover: none) {
+  .card:hover, .cert-card:hover { border-color: var(--panel-border); }
+  .cert-card.open:hover { border-color: rgba(0,219,231,.4); }
+  .stack-chip:hover { border-color: rgba(255,255,255,.16); color: rgba(229,226,225,.78); }
+  .job-card, .project-card, .cert-head, .btn-solid, .btn-outline, .cert-link, .modal-link {
+    transition: transform .18s ease, border-color .3s ease, box-shadow .3s ease, background .3s ease;
+  }
+  .job-card:active, .project-card:active { transform: scale(.985); border-color: rgba(0,219,231,.6); }
+  .btn-solid:active, .btn-outline:active, .cert-link:active, .modal-link:active { transform: scale(.97); }
+  .cert-head:active .cert-chev { background: rgba(0,219,231,.2); }
+}
+
+/* phones and touch devices: drop the per-card backdrop blur and the blurred reveal.
+   With ~25 blurred panels over animated layers, every scroll frame re-blurs the
+   background — the main source of jank on mid-range Android. A slightly more opaque
+   panel keeps the same look. */
+@media (max-width: 720px), (hover: none) {
+  .card, .job-card, .project-card, .cert-card {
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+    background: rgba(17, 19, 22, .86);
+  }
+  [data-reveal] { filter: none; }
+  [data-reveal].revealed {
+    filter: none;
+    transition: opacity .9s ease var(--rv-delay, 0ms), transform 1s cubic-bezier(.22,1,.36,1) var(--rv-delay, 0ms);
+  }
 }
 
 /* ── reduced motion ── */

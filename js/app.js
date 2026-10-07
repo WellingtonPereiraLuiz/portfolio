@@ -587,6 +587,26 @@
     document.querySelectorAll('[data-nav-id]').forEach((a) => {
       a.classList.toggle('active', a.getAttribute('data-nav-id') === state.active);
     });
+    // phones: the link row scrolls sideways; keep the active link in view
+    const nav = document.querySelector('.navbar-nav');
+    const activeLink = nav && nav.querySelector('a.active');
+    if (activeLink && nav.scrollWidth > nav.clientWidth) {
+      nav.scrollTo({ left: activeLink.offsetLeft - (nav.clientWidth - activeLink.offsetWidth) / 2 });
+    }
+  }
+
+  // phones: hide the (two-row) navbar while scrolling down, bring it back on scroll up
+  const smallScreen = window.matchMedia('(max-width: 720px)');
+  let lastScrollY = window.scrollY;
+  function autoHideNav() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    const y = window.scrollY;
+    const delta = y - lastScrollY;
+    lastScrollY = y;
+    if (!smallScreen.matches || y < 140) { navbar.classList.remove('nav-hidden'); return; }
+    if (delta > 6) navbar.classList.add('nav-hidden');
+    else if (delta < -6) navbar.classList.remove('nav-hidden');
   }
 
   let suppressSpy = false;
@@ -594,7 +614,7 @@
   let rafId;
   function onScroll() {
     if (rafId) return;
-    rafId = requestAnimationFrame(() => { rafId = null; spy(); });
+    rafId = requestAnimationFrame(() => { rafId = null; autoHideNav(); spy(); });
   }
   function spy() {
     if (suppressSpy) return;
@@ -652,12 +672,18 @@
     modalOpener = document.activeElement;
     state.modal = m;
     renderModal();
-    document.querySelector('#modalRoot .modal-close').focus();
+    document.documentElement.classList.add('modal-open');
+    // a history entry so the phone's Back button closes the modal instead of leaving the site
+    if (!(history.state && history.state.wlModal)) history.pushState({ wlModal: true }, '');
+    document.querySelector('#modalRoot .modal-close').focus({ preventScroll: true });
   }
-  function closeModal() {
+  function closeModal(fromHistory) {
     if (!state.modal) return;
     state.modal = null;
     document.getElementById('modalRoot').innerHTML = '';
+    document.documentElement.classList.remove('modal-open');
+    // closed by ✕ / Esc / overlay: drop the entry openModal pushed
+    if (fromHistory !== true && history.state && history.state.wlModal) history.back();
     // return focus to the card that opened the modal
     if (modalOpener && modalOpener.isConnected) modalOpener.focus({ preventScroll: true });
     modalOpener = null;
@@ -800,6 +826,7 @@
     }
   });
 
+  window.addEventListener('popstate', () => { if (state.modal) closeModal(true); });
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
     if (state.openCert != null) setCertOpen(state.openCert, true);
