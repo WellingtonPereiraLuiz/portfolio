@@ -6,9 +6,9 @@
 <title>Wellington Luiz — Desenvolvedor de Software</title>
 <meta name="description" content="Portfólio de Wellington Luiz, desenvolvedor de software em Ariquemes (RO): projetos, carreira e certificações.">
 <link rel="canonical" href="https://wellingtonpereiraluiz.github.io/portfolio/">
-<meta name="theme-color" content="#edebe4">
-<!-- theme before first paint: saved choice, else light (the printed-paper look) -->
-<script>try{if(localStorage.getItem('wl_theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<meta name="theme-color" content="#0a0b0d">
+<!-- theme before first paint: dark by default, light if the visitor chose it -->
+<script>try{if(localStorage.getItem('wl_theme')==='light'){document.documentElement.dataset.theme='light';document.querySelector('meta[name="theme-color"]').setAttribute('content','#edebe4')}}catch(e){}</script>
 
 <!-- link previews (LinkedIn, WhatsApp, X…) -->
 <meta property="og:type" content="website">
@@ -34,18 +34,22 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jacquard+24&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Jacquard+24&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- paper grain -->
+<!-- atmospheric fixed layers -->
+<div class="bg-base" aria-hidden="true"></div>
+<div class="bg-fog" id="fogLayer" aria-hidden="true"></div>
+<div class="bg-embers" id="embersLayer" aria-hidden="true"></div>
+<div class="bg-vignette" aria-hidden="true"></div>
 <div class="bg-grain" aria-hidden="true"></div>
 
 <!-- shown only when JavaScript is off; the full site is rendered by js/app.js -->
 <noscript>
   <main class="noscript">
-    <p class="noscript-kicker">Desenvolvedor de software</p>
+    <p class="noscript-kicker">// DESENVOLVEDOR DE SOFTWARE</p>
     <h1>Wellington Luiz</h1>
     <p>Desenvolvedor na ILYSYN Systems e estudante de Análise e Desenvolvimento de Sistemas no IFRO, em Ariquemes (RO).</p>
     <p>Ative o JavaScript para ver projetos, carreira e certificações.</p>

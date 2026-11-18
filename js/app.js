@@ -2,13 +2,15 @@
   'use strict';
 
   // ────────────────────────────────────────────────────────────────────────
-  // Config
+  // Config (mirrors the DC prototype's editor props, hardcoded for the site)
   // ────────────────────────────────────────────────────────────────────────
+  const EMBER_COUNT = 14;
+  const FOG_INTENSITY = 0.55;
   const DEFAULT_LANG = 'pt';
   const CONTENT_TIMEOUT_MS = 4000;
 
   // ────────────────────────────────────────────────────────────────────────
-  // Data (fallback: the live content comes from Supabase, edited in admin.html)
+  // Data
   // ────────────────────────────────────────────────────────────────────────
   const PORTFOLIO_DATA = {
     personal: {
@@ -141,43 +143,42 @@
 
   const LABELS = {
     pt: {
-      nav: { sobre: 'Sobre', carreira: 'Carreira', projetos: 'Projetos', certificacoes: 'Certificações' },
-      ring: 'Desenvolvedor de software ✦ Ariquemes, Rondônia ✦ Anno MMXXVI ✦ ',
-      ctaProjects: 'Ver projetos', github: 'GitHub', email: 'E-mail',
-      eduLabel: 'Estudo', langLabel: 'Idiomas', locLabel: 'Onde moro',
-      hAbout: 'Sobre mim', stackLabel: 'Arsenal', roadmapLabel: 'Próximos passos',
-      hCareer: 'Carreira', sCareer: 'Onde trabalhei e o que fiz em cada lugar.',
-      hProjects: 'Projetos', sProjects: 'Sites, apps e produtos que construí, sozinho ou em equipe.',
-      hCerts: 'Certificações', sCerts: 'Prêmios e eventos de que participei.',
-      readMore: 'Ler mais', close: 'Fechar',
-      mStart: 'Início', mEnd: 'Conclusão', mHours: 'Carga horária', mInst: 'Instituição',
-      modalProject: 'Projeto', modalCareer: 'Carreira',
-      colophon: 'Composto em Jacquard 24 e EB Garamond. Imagens em dithering geradas no navegador.',
-      footer: '© 2026 Wellington Pereira Luiz',
+      nav: { sobre: 'SOBRE', carreira: 'CARREIRA', projetos: 'PROJETOS', certificacoes: 'CERTIFICAÇÕES' },
+      heroKicker: '// DESENVOLVEDOR DE SOFTWARE',
+      ctaProjects: 'VER PROJETOS', scrollHint: 'ROLE PARA EXPLORAR',
+      chAbout: 'CAPÍTULO 01 — A ALMA', hAbout: 'Sobre mim',
+      bioLabel: '◈ QUEM SOU', eduLabel: 'EDUCAÇÃO', langLabel: 'IDIOMAS', locLabel: 'LOCALIZAÇÃO',
+      stackLabel: '◈ ARSENAL TÉCNICO', roadmapLabel: '◈ ROTA DE ASCENSÃO',
+      chCareer: 'CAPÍTULO 02 — REGISTROS', hCareer: 'Carreira', sCareer: 'Cada posição, um fragmento de experiência gravado no vazio.',
+      chProjects: 'CAPÍTULO 03 — ARTEFATOS', hProjects: 'Projetos', sProjects: 'Obras forjadas com engenharia de precisão.',
+      chCerts: 'CAPÍTULO 04 — SELOS', hCerts: 'Certificações', sCerts: 'Credenciais conquistadas com dedicação.',
+      viewDetails: 'VER DETALHES', close: 'FECHAR',
+      mStart: 'INÍCIO', mEnd: 'CONCLUSÃO', mHours: 'CARGA HORÁRIA', mInst: 'INSTITUIÇÃO',
+      modalProject: '◈ ARTEFATO', modalCareer: '◈ REGISTRO DE CARREIRA',
+      footer: '© 2026 WELLINGTON PEREIRA LUIZ. TODOS OS DIREITOS RESERVADOS.',
       emailCopied: 'E-mail copiado: ', emailCopyFail: 'Meu e-mail: ',
       toDark: 'Mudar para o modo escuro', toLight: 'Mudar para o modo claro',
     },
     en: {
-      nav: { sobre: 'About', carreira: 'Career', projetos: 'Projects', certificacoes: 'Certifications' },
-      ring: 'Software developer ✦ Ariquemes, Rondônia ✦ Anno MMXXVI ✦ ',
-      ctaProjects: 'See projects', github: 'GitHub', email: 'Email',
-      eduLabel: 'Studies', langLabel: 'Languages', locLabel: 'Based in',
-      hAbout: 'About me', stackLabel: 'Arsenal', roadmapLabel: 'Next steps',
-      hCareer: 'Career', sCareer: 'Where I have worked and what I did there.',
-      hProjects: 'Projects', sProjects: 'Websites, apps and products I have built, alone or with a team.',
-      hCerts: 'Certifications', sCerts: 'Awards and events I took part in.',
-      readMore: 'Read more', close: 'Close',
-      mStart: 'Start', mEnd: 'End', mHours: 'Total hours', mInst: 'Institution',
-      modalProject: 'Project', modalCareer: 'Career',
-      colophon: 'Set in Jacquard 24 and EB Garamond. Dithered images drawn in the browser.',
-      footer: '© 2026 Wellington Pereira Luiz',
+      nav: { sobre: 'ABOUT', carreira: 'CAREER', projetos: 'PROJECTS', certificacoes: 'CERTIFICATIONS' },
+      heroKicker: '// SOFTWARE DEVELOPER',
+      ctaProjects: 'VIEW PROJECTS', scrollHint: 'SCROLL TO EXPLORE',
+      chAbout: 'CHAPTER 01 — THE SOUL', hAbout: 'About me',
+      bioLabel: '◈ WHO I AM', eduLabel: 'EDUCATION', langLabel: 'LANGUAGES', locLabel: 'LOCATION',
+      stackLabel: '◈ TECH ARSENAL', roadmapLabel: '◈ ASCENSION PATH',
+      chCareer: 'CHAPTER 02 — RECORDS', hCareer: 'Career', sCareer: 'Each position, a fragment of experience etched into the void.',
+      chProjects: 'CHAPTER 03 — ARTIFACTS', hProjects: 'Projects', sProjects: 'Works forged with precision engineering.',
+      chCerts: 'CHAPTER 04 — SEALS', hCerts: 'Certifications', sCerts: 'Credentials earned through dedication.',
+      viewDetails: 'VIEW DETAILS', close: 'CLOSE',
+      mStart: 'START', mEnd: 'END', mHours: 'TOTAL HOURS', mInst: 'INSTITUTION',
+      modalProject: '◈ ARTIFACT', modalCareer: '◈ CAREER RECORD',
+      footer: '© 2026 WELLINGTON PEREIRA LUIZ. ALL RIGHTS RESERVED.',
       emailCopied: 'Email copied: ', emailCopyFail: 'My email: ',
       toDark: 'Switch to dark mode', toLight: 'Switch to light mode',
     },
   };
 
   const SECTION_IDS = ['sobre', 'carreira', 'projetos', 'certificacoes'];
-  const ROMAN = ['I', 'II', 'III', 'IV'];
 
   // ────────────────────────────────────────────────────────────────────────
   // Helpers
@@ -195,6 +196,7 @@
   function storeSet(key, value) {
     try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
   }
+
   function defaultData() {
     return JSON.parse(JSON.stringify(PORTFOLIO_DATA));
   }
@@ -219,20 +221,52 @@
   // ────────────────────────────────────────────────────────────────────────
   const state = {
     lang: ['pt', 'en'].includes(storeGet('wl_lang')) ? storeGet('wl_lang') : DEFAULT_LANG,
-    theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
+    theme: document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
     active: 'sobre',
     data: null,
     modal: null,
     openCert: null,
   };
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const smallScreen = window.matchMedia('(max-width: 720px)');
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  // ────────────────────────────────────────────────────────────────────────
+  // Atmosphere: fog + embers (built once)
+  // ────────────────────────────────────────────────────────────────────────
+  const fogEl = document.getElementById('fogLayer');
+  fogEl.style.opacity = String(FOG_INTENSITY);
+
+  function buildEmbers() {
+    const layer = document.getElementById('embersLayer');
+    const colors = ['var(--cyan)', 'var(--text)', 'var(--cyan)', 'var(--ember-pink)'];
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < EMBER_COUNT; i++) {
+      const span = document.createElement('span');
+      const size = (1 + Math.random() * 2.2).toFixed(1) + 'px';
+      const dur = (8 + Math.random() * 14).toFixed(1) + 's';
+      const delay = (Math.random() * 12).toFixed(1) + 's';
+      span.className = 'ember';
+      span.style.left = (Math.random() * 98 + 1).toFixed(1) + '%';
+      span.style.width = size;
+      span.style.height = size;
+      span.style.background = colors[i % colors.length];
+      span.style.animationDuration = dur;
+      span.style.animationDelay = delay;
+      frag.appendChild(span);
+    }
+    layer.appendChild(frag);
+  }
+
+  let surging = false;
+  function fogSurge() {
+    if (surging) return;
+    surging = true;
+    fogEl.classList.add('surge');
+    setTimeout(() => { fogEl.classList.remove('surge'); surging = false; }, 1700);
+  }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Dithering: ordered (Bayer 8×8) dithering of shaded shapes, drawn small on a
-  // canvas in the ink color and scaled up with hard pixel edges (CSS).
+  // Dithering: ordered (Bayer 8×8) dithering, drawn small on canvases in the
+  // accent color and scaled up with hard pixel edges. Used in small doses: the
+  // hero "W", the project emblems and the fading lines.
   // ────────────────────────────────────────────────────────────────────────
   const BAYER = (function build(n) {
     let m = [[0]];
@@ -242,8 +276,7 @@
       for (let y = 0; y < s * 2; y++) {
         next.push([]);
         for (let x = 0; x < s * 2; x++) {
-          const q = [[0, 2], [3, 1]][Math.floor(y / s)][Math.floor(x / s)];
-          next[y].push(4 * m[y % s][x % s] + q);
+          next[y].push(4 * m[y % s][x % s] + [[0, 2], [3, 1]][Math.floor(y / s)][Math.floor(x / s)]);
         }
       }
       m = next;
@@ -251,293 +284,120 @@
     return m.map((row) => row.map((v) => (v + 0.5) / (n * n)));
   })(8);
 
-  // smooth value noise, for surface texture
-  function hash(x, y) {
-    const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
-    return s - Math.floor(s);
-  }
-  function noise(x, y) {
-    const xi = Math.floor(x), yi = Math.floor(y);
-    const xf = x - xi, yf = y - yi;
-    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
-    const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
-    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
-  }
-  function fbm(x, y) {
-    return noise(x, y) * 0.55 + noise(x * 2.1, y * 2.1) * 0.3 + noise(x * 4.3, y * 4.3) * 0.15;
-  }
+  const EMBLEMS = ['shield', 'sun', 'arch', 'ring', 'orb', 'column', 'cross'];
   const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
-
-  // Each shape maps a point (u right, v down, both in -1..1; the frame's aspect is
-  // `ar` = width/height so u spans -ar..ar) to a "darkness" 0..1, or -1 for blank
-  // paper. `L` is the light direction {x, y, z} (normalized).
-  function lambert(nx, ny, nz, L) {
-    return Math.max(0, nx * L.x + ny * L.y + nz * L.z);
-  }
+  // Each emblem maps a point (u, v in -1..1, v down) to a tone 0..1, or -1 for empty.
+  // Light comes from the upper left.
+  const LIGHT = { x: -0.55, y: -0.55, z: 0.63 };
+  const lit = (x, y, z) => Math.max(0, x * LIGHT.x + y * LIGHT.y + z * LIGHT.z);
   const SHAPES = {
-    // the hero orb: a lit sphere with a mottled, moon-like surface and a cast shadow
-    orb(u, v, L, o) {
-      const R = 0.8;
-      const x = u / R, y = v / R, r2 = x * x + y * y;
-      if (r2 <= 1) {
-        const z = Math.sqrt(1 - r2);
-        const tex = fbm(x * 3 + 7, y * 3 + 3) - 0.5;
-        const d = lambert(x, y, z, L);
-        return clamp01(1 - (0.05 + 0.95 * d) + tex * 0.35 + (r2 > 0.93 ? 0.25 : 0));
-      }
-      if (!o.dark) {
-        // shadow on the ground, opposite the light
-        const sx = (u + L.x * 0.5) / 0.75, sy = (v - 0.93) / 0.07;
-        const s = sx * sx + sy * sy;
-        if (s < 1) return (1 - s) * 0.7;
-      }
-      return -1;
+    shield(u, v) {
+      if (Math.abs(u) > 0.7 || v < -0.8 || v > 0.9) return -1;
+      if (v > 0.15) { const k = (v - 0.15) / 0.75; if (Math.abs(u) > 0.7 * Math.sqrt(Math.max(0, 1 - k * k))) return -1; }
+      if (Math.abs(u) < 0.1 || Math.abs(v + 0.15) < 0.1) return 1;
+      return clamp01(0.35 + (u + v) * 0.25);
     },
-    // a gothic window: pointed arch, light falling through it, a mullion and a rose
-    arch(u, v) {
-      const w = 0.5, top = 0.02;
-      const inside = Math.abs(u) <= w && v <= 0.85 && (v >= top ||
-        (Math.hypot(u + w, v - top) <= 2 * w && Math.hypot(u - w, v - top) <= 2 * w));
-      if (!inside) return v > 0.85 && v < 0.95 && Math.abs(u) < 0.9 ? 0.9 : -1;
-      const edge = Math.abs(u) > w - 0.06 || v > 0.79 ||
-        (v < top && (Math.hypot(u + w, v - top) > 2 * w - 0.07 || Math.hypot(u - w, v - top) > 2 * w - 0.07));
-      if (edge || Math.abs(u) < 0.025) return 1;
-      const rose = Math.hypot(u, v + 0.32);
-      if (rose < 0.19) return rose > 0.15 ? 1 : 0.15 + 0.5 * (0.5 + 0.5 * Math.cos(Math.atan2(v + 0.32, u) * 6));
-      return clamp01(0.12 + (v + 1) * 0.42 + (fbm(u * 4, v * 4) - 0.5) * 0.3);
-    },
-    // a heraldic shield, split per pale, with a cross
-    shield(u, v, L) {
-      if (Math.abs(u) > 0.62 || v < -0.78 || v > 0.86) return -1;
-      if (v > 0.18) { const k = (v - 0.18) / 0.68; if (Math.abs(u) > 0.62 * Math.sqrt(Math.max(0, 1 - k * k))) return -1; }
-      if (Math.abs(u) < 0.08 || Math.abs(v + 0.12) < 0.08) return 0.95;
-      const bulge = lambert(u * 0.7, v * 0.4, 0.6, L);
-      return u < 0 ? clamp01(0.85 - bulge * 0.4) : clamp01(0.55 - bulge * 0.5);
-    },
-    // a medieval sun: shaded disk with alternating straight rays
-    sun(u, v, L) {
+    sun(u, v) {
       const r = Math.hypot(u, v), a = Math.atan2(v, u);
-      if (r < 0.36) {
-        const z = Math.sqrt(Math.max(0, 1 - (r / 0.36) ** 2));
-        return clamp01(1 - lambert(u / 0.36, v / 0.36, z, L) * 0.9);
-      }
-      const ray = Math.cos(a * 12);
-      const len = ray > 0 ? 0.92 : 0.68;
-      if (r < len && Math.abs(Math.sin(a * 12) * r) < 0.05 + (len - r) * 0.12) return clamp01(0.95 - (r - 0.36) * 0.9);
-      return -1;
+      if (r < 0.42) return clamp01(1 - lit(u / 0.42, v / 0.42, Math.sqrt(Math.max(0, 1 - (r / 0.42) ** 2))) * 0.9);
+      const len = Math.cos(a * 12) > 0 ? 0.98 : 0.74;
+      return r < len && Math.abs(Math.sin(a * 12) * r) < 0.06 + (len - r) * 0.14 ? 0.9 - (r - 0.42) : -1;
     },
-    // interference waves fading out at the edges
-    waves(u, v) {
-      const r = Math.hypot(u * 0.8, v);
-      if (r > 1) return -1;
-      const w = 0.5 + 0.5 * Math.sin(u * 9 + Math.sin(v * 3.4) * 2.6);
-      return clamp01(w * (1 - r * 0.9));
+    arch(u, v) {
+      const w = 0.55, top = 0.05;
+      const inside = Math.abs(u) <= w && v <= 0.95 && (v >= top || (Math.hypot(u + w, v - top) <= 2 * w && Math.hypot(u - w, v - top) <= 2 * w));
+      if (!inside) return -1;
+      const edge = Math.abs(u) > w - 0.12 || v > 0.83 || (v < top && (Math.hypot(u + w, v - top) > 2 * w - 0.12 || Math.hypot(u - w, v - top) > 2 * w - 0.12));
+      if (edge || Math.abs(u) < 0.05) return 1;
+      return clamp01(0.15 + (v + 1) * 0.35);
     },
-    // a torus seen from above, lit from one side
-    ring(u, v, L) {
-      const R = 0.55, t = 0.24;
-      const d = Math.hypot(u, v) - R;
+    ring(u, v) {
+      const R = 0.6, t = 0.3, d = Math.hypot(u, v) - R;
       if (Math.abs(d) > t) return -1;
-      const nz = Math.sqrt(1 - (d / t) ** 2), k = d / t / Math.max(Math.hypot(u, v), 1e-6);
-      return clamp01(1 - lambert(u * k, v * k, nz, L) * 0.95);
+      const k = d / t / Math.max(Math.hypot(u, v), 1e-6);
+      return clamp01(1 - lit(u * k, v * k, Math.sqrt(1 - (d / t) ** 2)) * 0.95);
     },
-    // layered mountain ridges under a sky of lines
-    ridges(u, v) {
-      for (let i = 0; i < 4; i++) {
-        const h = 0.05 + i * 0.22 - fbm(u * 1.6 + i * 3.1, i * 2.3) * 0.5;
-        if (v > h) return clamp01(0.3 + i * 0.2 - (v - h) * 0.35);
-      }
-      return -1;
+    orb(u, v) {
+      const r2 = u * u + v * v;
+      return r2 > 0.85 ? -1 : clamp01(1 - lit(u / 0.92, v / 0.92, Math.sqrt(Math.max(0, 1 - r2 / 0.85))) * 0.95);
     },
-    // a fluted column, shaded as a cylinder
-    column(u, v, L) {
-      if (v < -0.78 || v > 0.84) return -1;
-      if (v < -0.66 || v > 0.72) return Math.abs(u) < 0.48 ? 0.9 : -1;
-      if (Math.abs(u) > 0.34) return -1;
-      const x = u / 0.34, z = Math.sqrt(1 - x * x);
-      const flute = Math.abs(Math.sin(x * 9)) < 0.18 ? 0.3 : 0;
-      return clamp01(1 - lambert(x, 0, z, L) * 0.95 + flute);
+    column(u, v) {
+      if (v < -0.9 || v > 0.92) return -1;
+      if (v < -0.74 || v > 0.76) return Math.abs(u) < 0.62 ? 1 : -1;
+      if (Math.abs(u) > 0.42) return -1;
+      const x = u / 0.42;
+      return clamp01(1 - lit(x, 0, Math.sqrt(1 - x * x)) * 0.95 + (Math.abs(Math.sin(x * 9)) < 0.2 ? 0.3 : 0));
+    },
+    cross(u, v) {
+      const au = Math.abs(u), av = Math.abs(v);
+      // a cross pattée: arms that widen toward the ends
+      const arm = (along, across) => along < 0.92 && across < 0.12 + along * 0.32;
+      if (!(arm(au, av) || arm(av, au))) return -1;
+      return clamp01(0.4 + (u + v) * 0.3);
     },
   };
-  const POSTER_SHAPES = ['sun', 'shield', 'arch', 'ring', 'waves', 'column', 'ridges'];
 
-  function readInk() {
-    const css = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#1e34d6';
-    const hex = css.replace('#', '');
-    const full = hex.length === 3 ? hex.split('').map((c) => c + c).join('') : hex;
-    const n = parseInt(full, 16);
-    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  function accentRGB() {
+    const v = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim().split(/\s+/).map(Number);
+    return v.length === 3 && v.every((x) => !Number.isNaN(x)) ? v : [0, 219, 231];
   }
 
-  // Draws `shape` on `canvas` (already sized). `dev` 0..1 "develops" the print:
-  // below 1 the lighter tones are still missing, appearing in Bayer order.
-  function drawDither(canvas, shape, opt) {
+  // tone(x, y, w, h) -> 0..1 or -1; each pixel is inked when its tone beats the Bayer cell
+  function ditherTo(canvas, tone, rgb) {
     const ctx = canvas.getContext('2d');
     const w = canvas.width, h = canvas.height;
     const img = ctx.createImageData(w, h);
-    const px = img.data;
-    const [r, g, b] = opt.ink;
-    const ar = w / h, fn = SHAPES[shape];
-    const dark = opt.dark, dev = opt.dev == null ? 1 : opt.dev;
-    const L = opt.light;
-    const flip = shape === 'orb';
-    const lift = (1 - dev) * 1.05;
     for (let y = 0; y < h; y++) {
-      const v = (y + 0.5) / h * 2 - 1;
-      const row = BAYER[y & 7];
       for (let x = 0; x < w; x++) {
-        let d = fn(((x + 0.5) / w * 2 - 1) * ar, v, L, opt);
-        if (d < 0) continue;
-        // dark theme: on the orb the ink becomes the light, so its tones flip (kept
-        // below solid so the surface stays dotted); posters keep their tones
-        if (dark && flip) d = (1 - d) * 0.86;
-        if (d - lift > row[x & 7]) {
+        const d = tone(x, y, w, h);
+        if (d > BAYER[y & 7][x & 7]) {
           const i = (y * w + x) * 4;
-          px[i] = r; px[i + 1] = g; px[i + 2] = b; px[i + 3] = 255;
+          img.data[i] = rgb[0]; img.data[i + 1] = rgb[1]; img.data[i + 2] = rgb[2]; img.data[i + 3] = 255;
         }
       }
     }
     ctx.putImageData(img, 0, 0);
   }
 
-  function lightFrom(ax, ay) {
-    const z = 0.72;
-    const len = Math.hypot(ax, ay, z);
-    return { x: ax / len, y: ay / len, z: z / len };
-  }
-
-  // a strip that fades from solid ink to blank paper, used as the band between sections
-  function makeBandImage(ink) {
-    const c = document.createElement('canvas');
-    c.width = 64; c.height = 14;
-    const ctx = c.getContext('2d');
-    const img = ctx.createImageData(c.width, c.height);
-    for (let y = 0; y < c.height; y++) {
-      const t = 1 - y / (c.height - 1);
-      for (let x = 0; x < c.width; x++) {
-        if (t * 0.9 > BAYER[y & 7][x & 7]) {
-          const i = (y * c.width + x) * 4;
-          img.data[i] = ink[0]; img.data[i + 1] = ink[1]; img.data[i + 2] = ink[2]; img.data[i + 3] = 255;
-        }
-      }
-    }
-    ctx.putImageData(img, 0, 0);
-    return `url(${c.toDataURL()})`;
-  }
-
-  // ── the hero orb: light follows the pointer, or drifts slowly on its own ──
-  const orb = { canvas: null, ink: null, ax: -0.55, ay: -0.5, tx: -0.55, ty: -0.5, dev: 1, raf: 0, visible: true, pointer: false };
-
-  function orbFrame(now) {
-    orb.raf = 0;
-    if (!orb.canvas || !orb.canvas.isConnected) return;
-    const still = reducedMotion.matches;
-    if (!orb.pointer && !still) {
-      const t = now / 5200;
-      orb.tx = Math.cos(t) * 0.7;
-      orb.ty = -0.35 + Math.sin(t * 0.8) * 0.35;
-    }
-    orb.ax += (orb.tx - orb.ax) * 0.08;
-    orb.ay += (orb.ty - orb.ay) * 0.08;
-    drawDither(orb.canvas, 'orb', { ink: orb.ink, dark: state.theme === 'dark', dev: orb.dev, light: lightFrom(orb.ax, orb.ay) });
-    if (!still && orb.visible && !document.hidden) orb.raf = requestAnimationFrame(orbFrame);
-  }
-  function orbKick() {
-    if (!orb.raf && orb.canvas) orb.raf = requestAnimationFrame(orbFrame);
-  }
-  function initOrb(ink) {
-    const canvas = document.querySelector('.hero-art canvas');
+  // the hero "W": a gothic letter, solid at the top and dissolving into dots below
+  let gothicReady = null;
+  function drawWatermark(rgb) {
+    const canvas = document.querySelector('.hero-watermark canvas');
     if (!canvas) return;
-    const res = smallScreen.matches ? 132 : 168;
-    canvas.width = res; canvas.height = res;
-    orb.canvas = canvas;
-    orb.ink = ink;
-    if (!heroObserver) {
-      heroObserver = new IntersectionObserver((entries) => {
-        orb.visible = entries[0].isIntersecting;
-        if (orb.visible) orbKick();
-      });
-    }
-    heroObserver.disconnect();
-    heroObserver.observe(canvas);
-    orbKick();
-  }
-  let heroObserver;
-
-  // the first load develops the orb from blank paper
-  function developOrb() {
-    if (reducedMotion.matches) return;
-    const start = performance.now();
-    orb.dev = 0;
-    (function step(now) {
-      orb.dev = Math.min(1, (now - start) / 1600);
-      orbKick();
-      if (orb.dev < 1) requestAnimationFrame(step);
-    })(start);
+    const paint = () => {
+      if (!canvas.isConnected) return;
+      const w = canvas.width, h = canvas.height;
+      const off = document.createElement('canvas');
+      off.width = w; off.height = h;
+      const octx = off.getContext('2d');
+      octx.fillStyle = '#000';
+      octx.textAlign = 'center'; octx.textBaseline = 'middle';
+      octx.font = `400 ${Math.round(h * 0.8)}px 'Jacquard 24', 'Libre Caslon Text', serif`;
+      octx.fillText('W', w / 2, h * 0.5);
+      const mask = octx.getImageData(0, 0, w, h).data;
+      ditherTo(canvas, (x, y) => (mask[(y * w + x) * 4 + 3] > 127 ? 1.05 - (y / h) * 0.95 : -1), rgb);
+    };
+    if (!gothicReady) gothicReady = (document.fonts && document.fonts.load) ? document.fonts.load("400 100px 'Jacquard 24'").catch(() => null) : Promise.resolve();
+    gothicReady.then(paint);
   }
 
-  window.addEventListener('pointermove', (e) => {
-    if (!finePointer.matches || !orb.canvas || reducedMotion.matches) return;
-    const r = orb.canvas.getBoundingClientRect();
-    if (r.bottom < 0) return;
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    const span = Math.max(window.innerWidth, 600) * 0.45;
-    orb.pointer = true;
-    orb.tx = Math.max(-1.4, Math.min(1.4, (e.clientX - cx) / span));
-    orb.ty = Math.max(-1.4, Math.min(1.4, (e.clientY - cy) / span));
-    orbKick();
-  }, { passive: true });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) orbKick(); });
-
-  // ── posters: each develops once, the first time it scrolls into view ──
-  let posterObserver;
-  function initPosters(ink) {
-    const dark = state.theme === 'dark';
-    if (!posterObserver) {
-      posterObserver = new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-          if (!en.isIntersecting) return;
-          posterObserver.unobserve(en.target);
-          developPoster(en.target);
-        });
-      }, { threshold: 0.25 });
-    }
-    posterObserver.disconnect();
-    document.querySelectorAll('canvas[data-shape]').forEach((c) => {
-      const rect = c.parentElement.getBoundingClientRect();
-      const wide = c.dataset.wide === '1';
-      c.width = wide ? 160 : 112;
-      c.height = Math.round(c.width * (rect.height / rect.width || 0.75));
-      c._opt = { ink, dark, light: lightFrom(-0.6, -0.55), dev: 1 };
-      const seen = developed.has(c.dataset.key);
-      if (reducedMotion.matches || seen) {
-        drawDither(c, c.dataset.shape, c._opt);
-      } else {
-        c._opt.dev = 0;
-        drawDither(c, c.dataset.shape, c._opt);
-        posterObserver.observe(c);
-      }
+  function drawDithered() {
+    const rgb = accentRGB();
+    drawWatermark(rgb);
+    document.querySelectorAll('.project-emblem canvas').forEach((c) => {
+      const fn = SHAPES[c.dataset.shape];
+      if (fn) ditherTo(c, (x, y, w, h) => fn((x + 0.5) / w * 2 - 1, (y + 0.5) / h * 2 - 1), rgb);
     });
-  }
-  const developed = new Set();
-  function developPoster(c) {
-    developed.add(c.dataset.key);
-    const start = performance.now();
-    (function step(now) {
-      if (!c.isConnected) return;
-      c._opt.dev = Math.min(1, (now - start) / 900);
-      drawDither(c, c.dataset.shape, c._opt);
-      if (c._opt.dev < 1) requestAnimationFrame(step);
-    })(start);
-  }
-
-  // blackletter capitals are hard to read, so an all-caps title is set in Garamond
-  function isCaps(s) {
-    return /[A-ZÀ-Ý]{3,}/.test(s) && s === s.toUpperCase();
-  }
-
-  function shapeFor(projectIndex) {
-    return POSTER_SHAPES[projectIndex % POSTER_SHAPES.length];
+    // a short line that fades out in dots, and a faint dot field for the drop cap
+    const line = document.createElement('canvas');
+    line.width = 24; line.height = 1;
+    ditherTo(line, (x, y, w) => 1.02 - x / w, rgb);
+    const dots = document.createElement('canvas');
+    dots.width = 2; dots.height = 2;
+    ditherTo(dots, (x, y) => (x === 0 && y === 0 ? 1 : -1), rgb);
+    const root = document.documentElement.style;
+    root.setProperty('--dither-line', `url(${line.toDataURL()})`);
+    root.setProperty('--dither-dots', `linear-gradient(rgb(var(--bg-rgb) / .82), rgb(var(--bg-rgb) / .82)), url(${dots.toDataURL()})`);
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -565,41 +425,34 @@
 
     document.getElementById('app').innerHTML =
       renderNav(t) +
-      '<main>' +
       renderHero(t, p, heroBioShort) +
       renderAbout(t, data, p, bioFull) +
       renderCareer(t, data) +
       renderProjects(t, data) +
       renderCertifications(t, data) +
-      '</main>' +
       renderFooter(t, p);
 
-    const ink = readInk();
-    document.documentElement.style.setProperty('--dither-band', makeBandImage(ink));
-    initOrb(ink);
-    initPosters(ink);
+    drawDithered();
+    initReveal();
     initCertHeights();
     updateNavActive();
+    heroDrift(); // a re-render (language switch) keeps the hero where the scroll left it
   }
 
   function renderNav(t) {
     const navLinks = SECTION_IDS.map((id) =>
       `<a href="#${id}" data-action="goto" data-id="${id}" data-nav-id="${id}">${esc(t.nav[id])}</a>`
     ).join('');
-    const dark = state.theme === 'dark';
-    const icon = dark
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg>';
     return `
-    <nav class="navbar" aria-label="${state.lang === 'en' ? 'Main' : 'Principal'}">
-      <button class="navbar-brand" data-action="goto" data-id="sobre" aria-label="Wellington Luiz">W. Luiz</button>
+    <nav class="navbar">
+      <button class="navbar-brand" data-action="goto" data-id="sobre">◆ W.LUIZ</button>
       <div class="navbar-right">
         <div class="navbar-nav">${navLinks}</div>
-        <div class="navbar-tools">
-          <div class="navbar-lang">
-            ${langButton('pt')}<span aria-hidden="true">/</span>${langButton('en')}
-          </div>
-          <button class="theme-toggle" data-action="theme" aria-label="${esc(dark ? t.toLight : t.toDark)}" title="${esc(dark ? t.toLight : t.toDark)}">${icon}</button>
+        <div class="navbar-lang">
+          ${langButton('pt')}
+          <span>·</span>
+          ${langButton('en')}
+          ${themeButton(t)}
         </div>
       </div>
     </nav>`;
@@ -607,96 +460,103 @@
 
   function langButton(lang) {
     const on = state.lang === lang;
-    return `<button class="${on ? 'active' : ''}" aria-pressed="${on}" data-action="lang" data-lang="${lang}" lang="${lang}">${lang}</button>`;
+    return `<button class="${on ? 'active' : ''}" aria-pressed="${on}" data-action="lang" data-lang="${lang}">${lang.toUpperCase()}</button>`;
+  }
+
+  function themeButton(t) {
+    const light = state.theme === 'light';
+    const label = light ? t.toDark : t.toLight;
+    const icon = light
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>';
+    return `<button class="theme-toggle" data-action="theme" aria-label="${esc(label)}" title="${esc(label)}">${icon}</button>`;
   }
 
   function renderHero(t, p, heroBioShort) {
-    const ring = esc(t.ring.repeat(2));
     return `
-    <section id="sobre" aria-label="${esc(t.hAbout)}">
+    <section id="sobre" data-screen-label="Sobre">
       <div class="hero">
-        <div class="hero-main">
-          <p class="hero-kicker">${esc(tr(p.title, state.lang))}</p>
-          <h1 class="hero-name">${splitName(p.name)}</h1>
-          <p class="hero-bio">${esc(heroBioShort)}</p>
-          <div class="hero-cta">
-            <button class="btn-solid" data-action="goto" data-id="projetos">${esc(t.ctaProjects)}</button>
-            <a class="btn-outline" href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">${esc(t.github)}</a>
-            <a class="btn-outline" href="mailto:${esc(p.email)}" data-action="email">${esc(t.email)}</a>
+        <div class="hero-watermark"><canvas width="130" height="130" aria-hidden="true"></canvas></div>
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="hero-content">
+          <div class="hero-main">
+            <div class="hero-kicker" data-reveal>${esc(t.heroKicker)}</div>
+            <div class="hero-name" data-reveal>${splitName(p.name)}</div>
+            <div class="hero-bio" data-reveal>${esc(heroBioShort)}</div>
+            <div class="hero-cta" data-reveal>
+              <button class="btn-solid" data-action="goto" data-id="projetos">${esc(t.ctaProjects)}</button>
+              <a class="btn-outline" href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">GITHUB</a>
+              <a class="btn-outline" href="mailto:${esc(p.email)}" data-action="email">E-MAIL</a>
+            </div>
           </div>
-          <dl class="hero-facts">
-            <div><dt>${esc(t.eduLabel)}</dt><dd>${esc(tr(p.education, state.lang))}</dd></div>
-            <div><dt>${esc(t.locLabel)}</dt><dd>${esc(p.location)}</dd></div>
-            <div><dt>${esc(t.langLabel)}</dt><dd>${esc(tr(p.languages, state.lang))}</dd></div>
-          </dl>
+          <div class="hero-panel" data-reveal>
+            <div class="hero-panel-label">${esc(t.eduLabel)}</div>
+            <div class="hero-panel-value">${esc(tr(p.education, state.lang))}</div>
+            <div class="hero-panel-label">${esc(t.locLabel)}</div>
+            <div class="hero-panel-value">${esc(p.location)}</div>
+            <div class="hero-panel-label">${esc(t.langLabel)}</div>
+            <div class="hero-panel-value">${esc(tr(p.languages, state.lang))}</div>
+          </div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <svg class="hero-ring" viewBox="0 0 200 200">
-            <defs><path id="ringPath" d="M100,100 m-92,0 a92,92 0 1,1 184,0 a92,92 0 1,1 -184,0"/></defs>
-            <g><text><textPath href="#ringPath" textLength="574" lengthAdjust="spacing">${ring}</textPath></text></g>
-          </svg>
-          <canvas class="dither"></canvas>
+        <div class="scroll-hint">
+          <span>${esc(t.scrollHint)}</span>
+          <span class="arrow">▾</span>
         </div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
       </div>
   `;
   }
 
-  // One span per letter for the opening; one line per word. Screen readers get the
-  // plain name.
+  // One span per letter for the opening "focus pull". Screen readers get the plain
+  // name; words stay unbreakable so the name only wraps between words.
   function splitName(name) {
     let i = 0;
     const words = String(name || '').split(' ').filter(Boolean).map((w) =>
       `<span class="hn-word">${[...w].map((ch) => `<span class="hn-ch" style="--i:${i++}">${esc(ch)}</span>`).join('')}</span>`
     );
-    return `<span class="sr-only">${esc(name)}</span><span aria-hidden="true">${words.join('')}</span>`;
-  }
-
-  function sectionHead(n, title, sub) {
-    return `
-      <header class="section-head">
-        <span class="section-num" aria-hidden="true">${ROMAN[n]}</span>
-        <h2 class="section-title">${esc(title)}</h2>
-        ${sub ? `<p class="section-sub">${esc(sub)}</p>` : ''}
-      </header>`;
+    return `<span class="sr-only">${esc(name)}</span><span aria-hidden="true">${words.join(' ')}</span>`;
   }
 
   function renderAbout(t, data, p, bioFull) {
     const stackGroups = data.techStack.map((g) => `
       <div class="stack-group">
-        <h4>${esc(tr(g.category, state.lang))}</h4>
-        <ul>${g.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
+        <div class="stack-group-title">${esc(tr(g.category, state.lang))}</div>
+        <div class="stack-items">
+          ${g.items.map((i) => `<span class="stack-chip">● ${esc(i)}</span>`).join('')}
+        </div>
       </div>`).join('');
 
-    const roadmapItems = data.roadmap.map((r, i) => `
-      <li>
-        <span class="roadmap-n" aria-hidden="true">${ROMAN[i] || i + 1}</span>
-        <span class="roadmap-title">${esc(tr(r.title, state.lang))}</span>
-        <span class="roadmap-desc">${esc(tr(r.desc, state.lang))}</span>
-      </li>`).join('');
-
-    // illuminated initial: the first letter set apart on a block of ink
-    const first = [...bioFull][0] || '';
-    const rest = bioFull.slice(first.length);
-    const quote = tr(p.quote, state.lang).replace(/^["“]|["”]$/g, '');
+    const roadmapItems = data.roadmap.map((r) => `
+      <div class="roadmap-item">
+        <div class="roadmap-title">${esc(tr(r.title, state.lang))}</div>
+        <div class="roadmap-desc">${esc(tr(r.desc, state.lang))}</div>
+      </div>`).join('');
 
     return `
-      <div class="dither-band" aria-hidden="true"></div>
-      <div class="section-inner">
-        ${sectionHead(0, t.hAbout)}
-        <div class="about">
-          <p class="about-bio"><span class="dropcap" aria-hidden="true">${esc(first)}</span><span class="sr-only">${esc(first)}</span>${esc(rest)}</p>
-          <blockquote class="about-quote">
-            <span class="fleuron" aria-hidden="true">❦</span>
-            <p>${esc(quote)}</p>
-            <span class="fleuron" aria-hidden="true">✠</span>
-          </blockquote>
-          <div>
-            <h3 class="about-h">${esc(t.stackLabel)}</h3>
+      <div class="about-inner">
+        <div class="about-head" data-reveal>
+          <div class="section-kicker">${esc(t.chAbout)}</div>
+          <div class="section-title">${esc(t.hAbout)}</div>
+        </div>
+        <div class="bento">
+          <div class="card card-bio" data-reveal>
+            <div class="card-label">${esc(t.bioLabel)}</div>
+            <div class="card-bio-text"><span class="dropcap" aria-hidden="true">${esc([...bioFull][0] || '')}</span><span class="sr-only">${esc([...bioFull][0] || '')}</span>${esc(bioFull.slice(([...bioFull][0] || '').length))}</div>
+          </div>
+          <div class="card card-quote" data-reveal>
+            <div class="quote-mark">❦</div>
+            <div class="quote-text">${esc(tr(p.quote, state.lang))}</div>
+            <div class="quote-line"></div>
+          </div>
+          <div class="card card-stack" data-reveal>
+            <div class="card-label">${esc(t.stackLabel)}</div>
             <div class="stack-groups">${stackGroups}</div>
           </div>
-          <div>
-            <h3 class="about-h">${esc(t.roadmapLabel)}</h3>
-            <ol class="roadmap">${roadmapItems}</ol>
+          <div class="card card-roadmap" data-reveal>
+            <div class="card-label">${esc(t.roadmapLabel)}</div>
+            ${roadmapItems}
           </div>
         </div>
       </div>
@@ -707,49 +567,61 @@
     const items = data.career.map((job) => {
       const chips = (job.achievements && (job.achievements[state.lang] || job.achievements.pt)) || [];
       return `
-      <li class="job" data-action="open-job" data-id="${esc(job.id)}" role="button" tabindex="0" aria-haspopup="dialog">
+      <div class="job-card" data-reveal data-action="open-job" data-id="${esc(job.id)}" role="button" tabindex="0" aria-haspopup="dialog">
+        <div class="job-dot"></div>
         <div class="job-period">${esc(tr(job.period, state.lang))}</div>
-        <div>
-          <h3 class="job-role">${esc(tr(job.role, state.lang))}</h3>
-          <p class="job-company">${esc(job.company)}</p>
-          <p class="job-short">${esc(tr(job.shortDesc, state.lang))}</p>
-          <ul class="job-tags">${chips.map((c) => `<li class="tag">${esc(c)}</li>`).join('')}</ul>
-          <span class="job-more">${esc(t.readMore)}</span>
-        </div>
-      </li>`;
+        <div class="job-role">${esc(tr(job.role, state.lang))}</div>
+        <div class="job-company">${esc(job.company)}</div>
+        <div class="job-short">${esc(tr(job.shortDesc, state.lang))}</div>
+        <div class="chip-row">${chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</div>
+        <div class="view-details">${esc(t.viewDetails)} →</div>
+      </div>`;
     }).join('');
 
     return `
-    <section id="carreira" aria-labelledby="h-carreira">
-      <div class="dither-band" aria-hidden="true"></div>
+    <section id="carreira" data-screen-label="Carreira">
       <div class="section-inner">
-        ${sectionHead(1, t.hCareer, t.sCareer).replace('<h2 class="section-title"', '<h2 class="section-title" id="h-carreira"')}
-        <ol class="timeline">${items}</ol>
+        <div class="section-head" data-reveal>
+          <div class="section-kicker">${esc(t.chCareer)}</div>
+          <div class="section-title">${esc(t.hCareer)}</div>
+          <div class="section-sub">${esc(t.sCareer)}</div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-line"></div>
+          ${items}
+        </div>
       </div>
     </section>`;
   }
 
   function renderProjects(t, data) {
     const items = data.projects.map((pj, i) => {
+      const n = String(i + 1).padStart(2, '0');
       const badgeText = tr(pj.badge, state.lang);
-      const badge = badgeText ? `<span class="poster-badge">${esc(badgeText)}</span>` : '';
+      const badge = badgeText ? `<span class="project-badge">${esc(badgeText)}</span>` : '';
       return `
-      <article class="poster" data-action="open-project" data-id="${esc(pj.id)}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="${esc(pj.title)}">
-        <div class="poster-art"><canvas class="dither" data-shape="${shapeFor(i)}" data-key="p${esc(pj.id)}" aria-hidden="true"></canvas></div>
-        <div class="poster-body">
+      <div class="project-card" data-reveal data-action="open-project" data-id="${esc(pj.id)}" role="button" tabindex="0" aria-haspopup="dialog">
+        <div class="project-topline"></div>
+        <div class="project-emblem" aria-hidden="true"><canvas width="15" height="15" data-shape="${EMBLEMS[i % EMBLEMS.length]}"></canvas></div>
+        <div class="project-kicker">◆ Nº ${n}</div>
+        <div class="project-head-row">
+          <div class="project-title">${esc(pj.title)}</div>
           ${badge}
-          <h3 class="poster-title${isCaps(pj.title) ? ' caps' : ''}">${esc(pj.title)}</h3>
-          <p class="poster-short">${esc(tr(pj.shortDesc, state.lang))}</p>
-          <p class="poster-tags">${esc(pj.tags.join(', '))}</p>
         </div>
-      </article>`;
+        <div class="project-short">${esc(tr(pj.shortDesc, state.lang))}</div>
+        <div class="project-tags">${pj.tags.map((tg) => `<span class="tag">${esc(tg)}</span>`).join('')}</div>
+        <div class="view-details">${esc(t.viewDetails)} →</div>
+      </div>`;
     }).join('');
 
     return `
-    <section id="projetos" aria-labelledby="h-projetos">
-      <div class="dither-band" aria-hidden="true"></div>
+    <section id="projetos" data-screen-label="Projetos">
       <div class="section-inner">
-        ${sectionHead(2, t.hProjects, t.sProjects).replace('<h2 class="section-title"', '<h2 class="section-title" id="h-projetos"')}
+        <div class="section-head" data-reveal>
+          <div class="section-kicker">${esc(t.chProjects)}</div>
+          <div class="section-title">${esc(t.hProjects)}</div>
+          <div class="section-sub">${esc(t.sProjects)}</div>
+        </div>
         <div class="project-grid">${items}</div>
       </div>
     </section>`;
@@ -760,39 +632,44 @@
       const metas = [
         { label: t.mStart, value: tr(c.startDate, state.lang) },
         { label: t.mEnd, value: tr(c.endDate, state.lang) },
-        { label: t.mHours, value: c.hours != null ? c.hours + 'h' : '' },
+        { label: t.mHours, value: c.hours + 'h' },
         { label: t.mInst, value: tr(c.institution, state.lang) },
-      ].filter((m) => m.value);
+      ];
       const links = (c.links || []).map((lk) =>
         `<a class="cert-link" href="${esc(lk.url)}" target="_blank" rel="noopener noreferrer">${esc(lk.label)} ↗</a>`
       ).join('');
       return `
-      <li class="cert-card" data-cert-id="${esc(c.id)}">
+      <div class="cert-card" data-reveal data-cert-id="${esc(c.id)}">
+        <div class="cert-topline"></div>
         <div class="cert-head" data-action="toggle-cert" data-id="${esc(c.id)}" role="button" tabindex="0" aria-expanded="false" aria-controls="cert-body-${esc(c.id)}">
           <div>
-            <h3 class="cert-name">${esc(tr(c.name, state.lang))}</h3>
-            <p class="cert-issuer">${esc(tr(c.issuer, state.lang))}</p>
+            <div class="cert-name">${esc(tr(c.name, state.lang))}</div>
+            <div class="cert-issuer">${esc(tr(c.issuer, state.lang))}</div>
           </div>
-          <span class="cert-chev" aria-hidden="true">+</span>
+          <div class="cert-chev">+</div>
         </div>
         <div class="cert-collapse" id="cert-body-${esc(c.id)}">
           <div class="cert-body">
-            <p class="cert-desc">${esc(tr(c.description, state.lang))}</p>
-            <dl class="cert-metas">
-              ${metas.map((m) => `<div><dt>${esc(m.label)}</dt><dd>${esc(m.value)}</dd></div>`).join('')}
-            </dl>
-            ${links ? `<div class="cert-links">${links}</div>` : ''}
+            <div class="cert-line"></div>
+            <div class="cert-desc">${esc(tr(c.description, state.lang))}</div>
+            <div class="cert-metas">
+              ${metas.map((m) => `<div class="cert-meta"><div class="cert-meta-label">${esc(m.label)}</div><div class="cert-meta-value">${esc(m.value)}</div></div>`).join('')}
+            </div>
+            <div class="cert-links">${links}</div>
           </div>
         </div>
-      </li>`;
+      </div>`;
     }).join('');
 
     return `
-    <section id="certificacoes" aria-labelledby="h-certificacoes">
-      <div class="dither-band" aria-hidden="true"></div>
+    <section id="certificacoes" data-screen-label="Certificações">
       <div class="section-inner">
-        ${sectionHead(3, t.hCerts, t.sCerts).replace('<h2 class="section-title"', '<h2 class="section-title" id="h-certificacoes"')}
-        <ul class="cert-list">${items}</ul>
+        <div class="section-head" data-reveal>
+          <div class="section-kicker">${esc(t.chCerts)}</div>
+          <div class="section-title">${esc(t.hCerts)}</div>
+          <div class="section-sub">${esc(t.sCerts)}</div>
+        </div>
+        <div class="cert-list">${items}</div>
       </div>
     </section>`;
   }
@@ -800,16 +677,39 @@
   function renderFooter(t, p) {
     return `
     <footer class="site-footer">
-      <span class="footer-mark" aria-hidden="true">W. Luiz</span>
-      <div>
-        <p class="footer-colophon">${esc(t.colophon)}</p>
-        <p class="footer-colophon">${esc(t.footer)}</p>
-      </div>
+      <div class="footer-copy">${esc(t.footer)}</div>
       <div class="footer-links">
-        <a href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">GITHUB</a>
         <a href="mailto:${esc(p.email)}" data-action="email">${esc(p.email)}</a>
       </div>
     </footer>`;
+  }
+
+  // ────────────────────────────────────────────────────────────────────────
+  // Reveal-on-scroll
+  // ────────────────────────────────────────────────────────────────────────
+  let io;
+  function initReveal() {
+    if (!io) {
+      io = new IntersectionObserver((entries) => {
+        const batch = entries.filter((en) => en.isIntersecting);
+        batch.forEach((en, i) => {
+          const el = en.target;
+          const delay = Math.min(i * 110, 440);
+          el.style.setProperty('--rv-delay', delay + 'ms');
+          el.classList.add('revealed');
+          io.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.9) {
+        el.classList.add('revealed-instant');
+        return;
+      }
+      io.observe(el);
+    });
   }
 
   // ────────────────────────────────────────────────────────────────────────
@@ -826,12 +726,14 @@
     // keep links in a closed card out of the Tab order
     collapse.inert = !open;
   }
+
   function initCertHeights() {
     document.querySelectorAll('.cert-card').forEach((card) => {
       const id = card.getAttribute('data-cert-id');
       setCertOpen(id, String(state.openCert) === id);
     });
   }
+
   function toggleCert(id) {
     const willOpen = String(state.openCert) !== String(id);
     const prev = state.openCert;
@@ -845,9 +747,7 @@
   // ────────────────────────────────────────────────────────────────────────
   function updateNavActive() {
     document.querySelectorAll('[data-nav-id]').forEach((a) => {
-      const on = a.getAttribute('data-nav-id') === state.active;
-      a.classList.toggle('active', on);
-      if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      a.classList.toggle('active', a.getAttribute('data-nav-id') === state.active);
     });
     // phones: the link row scrolls sideways; keep the active link in view
     const nav = document.querySelector('.navbar-nav');
@@ -857,7 +757,31 @@
     }
   }
 
+  // cinematic depth: while leaving the hero, its content lags behind and fades,
+  // and the big "W" watermark moves at its own speed (transform/opacity only)
+  function heroDrift() {
+    if (reducedMotion.matches) return;
+    const hero = document.querySelector('.hero');
+    const content = hero && hero.querySelector('.hero-content');
+    if (!content) return;
+    const h = hero.offsetHeight;
+    const y = Math.min(Math.max(window.scrollY, 0), h);
+    if (y >= h && content.dataset.drift === 'end') return; // already parked below the fold
+    const k = y / h;
+    // phones: the hero is taller than the screen and its info panel is still being read
+    // while scrolling, so only a light drift there, no fade
+    const phone = smallScreen.matches;
+    content.dataset.drift = y >= h ? 'end' : '';
+    content.style.transform = y ? `translate3d(0, ${(y * (phone ? 0.12 : 0.22)).toFixed(1)}px, 0)` : '';
+    content.style.opacity = y && !phone ? String(Math.max(0, 1 - k * 1.25).toFixed(3)) : '';
+    const mark = hero.querySelector('.hero-watermark');
+    if (mark) mark.style.transform = `translateY(calc(-58% + ${(y * 0.4).toFixed(1)}px))`;
+    const hint = hero.querySelector('.scroll-hint');
+    if (hint) hint.style.opacity = y ? String(Math.max(0, 1 - k * 4).toFixed(3)) : '';
+  }
+
   // phones: hide the (two-row) navbar while scrolling down, bring it back on scroll up
+  const smallScreen = window.matchMedia('(max-width: 720px)');
   let lastScrollY = window.scrollY;
   function autoHideNav() {
     const navbar = document.querySelector('.navbar');
@@ -875,7 +799,7 @@
   let rafId;
   function onScroll() {
     if (rafId) return;
-    rafId = requestAnimationFrame(() => { rafId = null; autoHideNav(); spy(); });
+    rafId = requestAnimationFrame(() => { rafId = null; autoHideNav(); heroDrift(); spy(); });
   }
   function spy() {
     if (suppressSpy) return;
@@ -888,12 +812,15 @@
     if (active !== state.active) {
       state.active = active;
       updateNavActive();
+      fogSurge();
     }
   }
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function scrollBehavior() {
     return reducedMotion.matches ? 'auto' : 'smooth';
   }
+
   function goto(id) {
     suppressSpy = true;
     clearTimeout(spyTimer);
@@ -905,13 +832,14 @@
       const el = document.getElementById(id);
       // stop just below the fixed navbar, whose height changes on phones (two rows)
       const navHeight = document.querySelector('.navbar').offsetHeight;
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navHeight + 30, behavior: scrollBehavior() });
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navHeight - 12, behavior: scrollBehavior() });
     }
+    fogSurge();
     spyTimer = setTimeout(() => { suppressSpy = false; spy(); }, 1200);
   }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Language and theme
+  // Language
   // ────────────────────────────────────────────────────────────────────────
   function setLang(lang) {
     if (lang !== 'pt' && lang !== 'en') return;
@@ -921,19 +849,13 @@
     renderApp();
   }
 
-  function applyTheme(theme) {
-    state.theme = theme;
-    document.documentElement.dataset.theme = theme;
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0e0f1a' : '#edebe4');
-  }
   function toggleTheme() {
-    const next = state.theme === 'dark' ? 'light' : 'dark';
-    storeSet('wl_theme', next);
-    applyTheme(next);
-    const y = window.scrollY;
+    state.theme = state.theme === 'light' ? 'dark' : 'light';
+    storeSet('wl_theme', state.theme);
+    document.documentElement.dataset.theme = state.theme;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', state.theme === 'light' ? '#edebe4' : '#0a0b0d');
     renderApp();
-    window.scrollTo(0, y);
     const btn = document.querySelector('.theme-toggle');
     if (btn) btn.focus({ preventScroll: true });
   }
@@ -962,6 +884,7 @@
     if (modalOpener && modalOpener.isConnected) modalOpener.focus({ preventScroll: true });
     modalOpener = null;
   }
+
   // keep Tab / Shift+Tab cycling inside the open modal
   function trapModalFocus(e) {
     const box = document.querySelector('#modalRoot .modal-box');
@@ -982,30 +905,26 @@
     const m = state.modal;
     if (!m) { root.innerHTML = ''; return; }
     const t = LABELS[state.lang] || LABELS.pt;
-    const tags = (m.chips || []).map((c) => `<span class="tag">${esc(c)}</span>`).join('');
+    const chips = (m.chips || []).map((c) => `<span class="chip">${esc(c)}</span>`).join('');
     const links = (m.links || []).map((lk, i) =>
-      `<a class="modal-link ${i === 0 ? 'btn-solid' : 'btn-outline'}" href="${esc(lk.url)}" target="_blank" rel="noopener noreferrer">${esc(lk.label || '')} ↗</a>`
+      `<a class="modal-link ${i === 0 ? 'primary' : 'secondary'}" href="${esc(lk.url)}" target="_blank" rel="noopener noreferrer">${esc((lk.label || '').toUpperCase())} ↗</a>`
     ).join('');
     root.innerHTML = `
       <div class="modal-overlay" data-action="close-modal-overlay">
         <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <div class="modal-topline"></div>
+          <div class="modal-corner modal-corner-tl"></div>
+          <div class="modal-corner modal-corner-br"></div>
           <button type="button" class="modal-close" data-action="close-modal">✕ ${esc(t.close)}</button>
-          ${m.shape ? `<div class="modal-art"><canvas class="dither" aria-hidden="true"></canvas></div>` : ''}
-          <div class="modal-content">
-            <p class="modal-kicker">${esc(m.kicker)}</p>
-            <h2 class="modal-title${isCaps(m.title) ? ' caps' : ''}" id="modalTitle">${esc(m.title)}</h2>
-            ${m.sub ? `<p class="modal-sub">${esc(m.sub)}</p>` : ''}
-            ${tags ? `<div class="modal-tags">${tags}</div>` : ''}
-            <p class="modal-desc">${esc(m.desc)}</p>
-            ${links ? `<div class="modal-links">${links}</div>` : ''}
-          </div>
+          <div class="modal-kicker">${esc(m.kicker)}</div>
+          <div class="modal-title" id="modalTitle">${esc(m.title)}</div>
+          <div class="modal-line"></div>
+          ${m.sub ? `<div class="modal-sub">${esc(m.sub)}</div>` : ''}
+          <div class="modal-chips">${chips}</div>
+          <div class="modal-desc">${esc(m.desc)}</div>
+          <div class="modal-links">${links}</div>
         </div>
       </div>`;
-    const c = root.querySelector('.modal-art canvas');
-    if (c) {
-      c.width = 192; c.height = 84;
-      drawDither(c, m.shape, { ink: readInk(), dark: state.theme === 'dark', light: lightFrom(-0.6, -0.55) });
-    }
   }
 
   function openJobModal(id) {
@@ -1015,32 +934,36 @@
     const chips = (job.achievements && (job.achievements[state.lang] || job.achievements.pt)) || [];
     openModal({
       kicker: t.modalCareer, title: tr(job.role, state.lang),
-      sub: job.company + ', ' + tr(job.period, state.lang),
+      sub: job.company + '  ·  ' + tr(job.period, state.lang),
       chips, desc: tr(job.description, state.lang), links: [],
     });
   }
+
   function openProjectModal(id) {
     const t = LABELS[state.lang] || LABELS.pt;
-    const index = state.data.projects.findIndex((p) => String(p.id) === String(id));
-    const pj = state.data.projects[index];
+    const pj = state.data.projects.find((p) => String(p.id) === String(id));
     if (!pj) return;
     openModal({
       kicker: t.modalProject, title: pj.title, sub: '',
       chips: pj.tags, desc: tr(pj.longDesc, state.lang),
-      links: pj.links || [], shape: shapeFor(index),
+      links: pj.links || [],
     });
   }
 
   // ────────────────────────────────────────────────────────────────────────
-  // Toast + clipboard
+  // Toast
   // ────────────────────────────────────────────────────────────────────────
   let toastTimer;
   function showToast(msg) {
     const root = document.getElementById('toastRoot');
-    root.innerHTML = `<div class="toast" role="status">${esc(msg)}</div>`;
+    root.innerHTML = `<div class="toast">${esc(msg)}</div>`;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { root.innerHTML = ''; }, 3200);
   }
+
+  // ────────────────────────────────────────────────────────────────────────
+  // Clipboard
+  // ────────────────────────────────────────────────────────────────────────
   function copyEmail() {
     const t = LABELS[state.lang] || LABELS.pt;
     const email = state.data.personal.email;
@@ -1102,33 +1025,42 @@
 
   window.addEventListener('popstate', () => { if (state.modal) closeModal(true); });
   window.addEventListener('scroll', onScroll, { passive: true });
-  let resizeTimer;
   window.addEventListener('resize', () => {
     if (state.openCert != null) setCertOpen(state.openCert, true);
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { if (state.data) initPosters(readInk()); }, 200);
   });
 
   // ────────────────────────────────────────────────────────────────────────
   // Init
   // ────────────────────────────────────────────────────────────────────────
-  // Opening (first load only, skipped with reduced motion): the name sets in letter by
-  // letter while the orb develops from blank paper.
-  function playIntro() {
-    if (reducedMotion.matches || window.scrollY > 40) return;
+  // Opening shot (first load only, skipped with reduced motion): black letterbox bars
+  // wait while the content loads, then open as the hero name comes into focus.
+  function createLetterbox() {
+    if (reducedMotion.matches || window.scrollY > 40) return [];
+    return ['top', 'bottom'].map((pos) => {
+      const bar = document.createElement('div');
+      bar.className = 'letterbox letterbox-' + pos;
+      bar.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(bar);
+      return bar;
+    });
+  }
+  function playIntro(bars) {
+    if (!bars.length) return;
     const root = document.documentElement;
     root.classList.add('intro');
-    developOrb();
-    setTimeout(() => root.classList.remove('intro'), 2600); // a later re-render won't replay it
+    bars.forEach((bar) => bar.classList.add('open'));
+    setTimeout(() => bars.forEach((bar) => bar.remove()), 1600);
+    setTimeout(() => root.classList.remove('intro'), 3600); // a language switch later won't replay it
   }
 
-  applyTheme(state.theme);
+  buildEmbers();
+  const introBars = createLetterbox();
   const appRoot = document.getElementById('app');
   appRoot.setAttribute('aria-busy', 'true');
   loadContent().then((data) => {
     state.data = data;
+    playIntro(introBars); // class set before the first paint of the content
     renderApp();
-    playIntro();
     appRoot.removeAttribute('aria-busy');
     spy();
   });
