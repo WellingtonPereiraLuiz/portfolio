@@ -1,6 +1,6 @@
 # Wellington Luiz — Portfólio
 
-Portfólio profissional de Wellington Luiz, desenvolvedor de software. Site estático em HTML/CSS/JS puro, com identidade visual inspirada em souls-like (Mortal Shell) tratada de forma limpa e profissional: fundo escuro, névoa e brasas sutis, tipografia serifada para títulos e monoespaçada para rótulos, tudo em tons de ciano.
+Portfólio profissional de Wellington Luiz, desenvolvedor de software. Site estático em HTML/CSS/JS puro, com identidade de "códice pontilhado": papel e uma tinta só (azul cobalto), como uma impressão, tipografia gótica pixelada (Jacquard 24) com texto em EB Garamond, e imagens em dithering (Bayer 8×8) desenhadas no navegador. Tem modo claro (padrão) e escuro.
 
 🔗 **Site no ar:** https://wellingtonpereiraluiz.github.io/portfolio/
 
@@ -9,7 +9,8 @@ Portfólio profissional de Wellington Luiz, desenvolvedor de software. Site est�
 - **Navegação híbrida**: scroll contínuo com navbar fixa que acompanha a seção ativa (scrollspy)
 - **PT / EN**: alternância de idioma no header, com preferência salva no navegador
 - **Seções**: Sobre (bio, arsenal técnico, rota de ascensão), Carreira (linha do tempo), Projetos (grid com modal de detalhes) e Certificações (acordeão fluido)
-- **Animações**: elementos revelam-se suavemente ao rolar a página, com névoa que "pulsa" a cada troca de seção
+- **Claro / escuro**: botão no header, com preferência salva no navegador
+- **Dithering**: a esfera do topo segue o mouse; cada projeto ganha uma arte pontilhada que "revela" como uma impressão ao aparecer na tela (tudo em `js/app.js`, sem imagens)
 - **Painel** (`/admin.html`): página com login para editar todo o conteúdo do site sem tocar em código; as mudanças aparecem na hora para todos os visitantes
 
 ## Estrutura

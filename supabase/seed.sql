@@ -2,7 +2,7 @@
 -- Portfólio: conteúdo inicial
 --
 -- Rode no SQL Editor do Supabase DEPOIS do schema.sql. Cria a linha única de
--- conteúdo com o PORTFOLIO_DATA do js/app.js (versão de 30/09/2026).
+-- conteúdo com o PORTFOLIO_DATA do js/app.js (versão de 18/11/2026).
 -- Rodar de novo substitui o conteúdo atual (a versão anterior vai para o
 -- histórico).
 -- ════════════════════════════════════════════════════════════════════════
@@ -15,8 +15,8 @@ values (1, $portfolio${
       "en": "Software Developer"
     },
     "bio": {
-      "pt": "Olá! Sou o Wellington, tenho 21 anos, estudante de Análise e Desenvolvimento de Sistemas (ADS) no IFRO e estagiário na Prefeitura de Ariquemes. Meu foco está em estudar engenharia de software e construir side projects práticos para aplicar conceitos e testar novas tecnologias. Utilizo IA de forma estratégica para acelerar o aprendizado e otimizar meu fluxo de desenvolvimento. Sou movido por disciplina diária e evolução contínua, buscando dominar clean code e lógica de programação para alcançar meu maior objetivo: atuar no setor aeroespacial.",
-      "en": "Hi! I'm Wellington, 21, a Systems Analysis and Development student at IFRO and an intern at Ariquemes City Hall. I focus on software engineering and practical side projects to apply concepts and test new technologies, using AI strategically to speed up learning and optimize my workflow. Driven by daily discipline and continuous evolution, mastering clean code and programming logic toward my long-term goal: the aerospace industry."
+      "pt": "Olá! Sou o Wellington, tenho 21 anos, sou desenvolvedor na ILYSYN Systems e estudante de Análise e Desenvolvimento de Sistemas (ADS) no IFRO. No trabalho, crio sites para clientes e cuido de documentação e apresentações. Fora dele, estudo engenharia de software e construo side projects para aplicar conceitos e testar novas tecnologias, usando IA de forma estratégica para acelerar o aprendizado e o meu fluxo de desenvolvimento. Sou movido por disciplina diária e evolução contínua, buscando dominar clean code e lógica de programação para alcançar meu maior objetivo: atuar no setor aeroespacial.",
+      "en": "Hi! I'm Wellington, 21, a developer at ILYSYN Systems and a Systems Analysis and Development student at IFRO. At work I build websites for clients and handle documentation and presentations. Outside work I study software engineering and build side projects to apply concepts and test new technologies, using AI strategically to speed up learning and my workflow. Driven by daily discipline and continuous growth, I'm working to master clean code and programming logic toward my long-term goal: the aerospace industry."
     },
     "education": {
       "pt": "Análise e Desenvolvimento de Sistemas — IFRO Ariquemes",
@@ -114,34 +114,6 @@ values (1, $portfolio${
   ],
   "projects": [
     {
-      "id": 7,
-      "title": "TRIRREME",
-      "badge": {
-        "pt": "SÓCIO-FUNDADOR",
-        "en": "CO-FOUNDER"
-      },
-      "tags": [
-        "Sistemas sob medida",
-        "Web",
-        "Automação",
-        "Vercel"
-      ],
-      "shortDesc": {
-        "pt": "Empresa de desenvolvimento de software que fundei com dois sócios: sistemas sob medida, sites e automações para empresas.",
-        "en": "Software development company I co-founded with two partners: custom systems, websites and automation for businesses."
-      },
-      "longDesc": {
-        "pt": "Sou sócio-fundador da TRIRREME, empresa de tecnologia criada com dois colegas de ADS do IFRO. Desenvolvemos sistemas sob medida (gestão de pedidos e estoque em tempo real), sites e catálogos digitais integrados ao WhatsApp, automações e integrações com planilhas e ERPs, além de consultoria, suporte e hospedagem. Trabalhamos com escopo, prazo e preço fechados, metodologia em etapas e entregas quinzenais.",
-        "en": "I am a co-founder of TRIRREME, a tech company started with two fellow Systems Analysis students from IFRO. We build custom systems (real-time order and inventory management), websites and digital catalogs integrated with WhatsApp, automations and integrations with spreadsheets and ERPs, plus consulting, support and hosting. We work with fixed scope, timeline and price, a staged methodology and bi-weekly deliveries."
-      },
-      "links": [
-        {
-          "label": "Site",
-          "url": "https://trirreme.com/"
-        }
-      ]
-    },
-    {
       "id": 3,
       "title": "CustoDoce",
       "badge": {
@@ -171,6 +143,34 @@ values (1, $portfolio${
         {
           "label": "GitHub",
           "url": "https://github.com/WellingtonPereiraLuiz/CustoDoce"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "TRIRREME",
+      "badge": {
+        "pt": "PROJETO DE FACULDADE",
+        "en": "COLLEGE PROJECT"
+      },
+      "tags": [
+        "Web",
+        "APIs",
+        "Open source",
+        "Vercel"
+      ],
+      "shortDesc": {
+        "pt": "Empresa de software criada por três colegas de ADS como projeto de faculdade. Hoje é nosso espaço para jogos, APIs e projetos open source.",
+        "en": "A software company three Systems Analysis classmates started as a college project. Today it is our space for games, APIs and open-source projects."
+      },
+      "longDesc": {
+        "pt": "A TRIRREME nasceu como projeto de faculdade: um grupo de três colegas de ADS do IFRO montou uma empresa de desenvolvimento de software com o objetivo de gerar renda, oferecendo sistemas sob medida, sites e automações. Concluímos a tarefa da faculdade em menos de quatro meses e encerramos as atividades comerciais. Hoje a TRIRREME segue como hobby: quando temos tempo, usamos o nome para criar jogos, APIs e projetos open source.",
+        "en": "TRIRREME started as a college project: three Systems Analysis classmates at IFRO set up a software development company to earn income, offering custom systems, websites and automation. We finished the college assignment in under four months and then closed the commercial side. Today TRIRREME lives on as a hobby: when we have time, we use the name to build games, APIs and open-source projects."
+      },
+      "links": [
+        {
+          "label": "Site",
+          "url": "https://trirreme.com/"
         }
       ]
     },
@@ -382,31 +382,31 @@ values (1, $portfolio${
       "id": 3,
       "company": "ILYSYN Systems",
       "role": {
-        "pt": "Desenvolvedor — Período de Avaliação",
-        "en": "Developer — Trial Period"
+        "pt": "Desenvolvedor",
+        "en": "Developer"
       },
       "period": {
         "pt": "Set 2026 — Presente",
         "en": "Sep 2026 — Present"
       },
       "shortDesc": {
-        "pt": "Período de avaliação de 3 meses para contratação como desenvolvedor: desenvolvimento assistido por IA e prospecção de clientes.",
-        "en": "3-month trial period toward a developer position: AI-assisted development and client prospecting."
+        "pt": "Desenvolvimento de sites para clientes, documentação e apresentações, com apoio de IA.",
+        "en": "Building websites for clients, writing documentation and preparing presentations, with AI support."
       },
       "description": {
-        "pt": "Desenvolvimento de sistemas e sites, prospecção de clientes no mercado dos EUA e participação em análises técnicas, seguindo boas práticas de engenharia de software com apoio de IA.",
-        "en": "Development of systems and websites, client prospecting in the US market and participation in technical reviews, following software engineering best practices with AI support."
+        "pt": "Entrei em setembro de 2026 para um período de avaliação e fui efetivado como desenvolvedor. No dia a dia, desenvolvo sites para clientes, escrevo documentação técnica, preparo apresentações, cuido das tarefas diárias da equipe e falo com clientes por ligação, seguindo boas práticas de engenharia de software com apoio de IA.",
+        "en": "I joined in September 2026 for a trial period and was hired as a developer. Day to day, I build websites for clients, write technical documentation, prepare presentations, handle the team's daily tasks and talk to clients on calls, following software engineering best practices with AI support."
       },
       "achievements": {
         "pt": [
-          "Desenvolvimento com IA",
-          "Front-end",
-          "Prospecção Outbound"
+          "Sites para clientes",
+          "Documentação",
+          "Desenvolvimento com IA"
         ],
         "en": [
-          "AI-Assisted Development",
-          "Front-end",
-          "Outbound Prospecting"
+          "Client websites",
+          "Documentation",
+          "AI-Assisted Development"
         ]
       }
     },
@@ -418,8 +418,8 @@ values (1, $portfolio${
         "en": "IT Intern"
       },
       "period": {
-        "pt": "Abr 2026 — Presente",
-        "en": "Apr 2026 — Present"
+        "pt": "Abr 2026 — Nov 2026",
+        "en": "Apr 2026 — Nov 2026"
       },
       "shortDesc": {
         "pt": "Infraestrutura de TI e suporte a redes públicas municipais.",

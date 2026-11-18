@@ -1,4 +1,30 @@
-/* Panel (admin.html). Builds on the tokens and base styles of css/style.css. */
+/* Panel (admin.html). Loads after css/style.css and keeps its own dark look: the
+   tokens below are the panel's, so a redesign of the public site doesn't change it. */
+:root {
+  --bg: #0a0b0d;
+  --text: #e5e2e1;
+  --cyan: #00dbe7;
+  --cyan-ink: #00262a;
+  --pink: #ff4a8d;
+  --panel-border: rgba(58, 73, 75, .55);
+  --font-serif: 'Libre Caslon Text', serif;
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); }
+body { color: var(--text); font: 400 15px/1.5 var(--font-sans); font-variant-numeric: normal; }
+a { color: var(--cyan); }
+::selection { background: rgba(0, 219, 231, .25); color: inherit; }
+:focus-visible { outline: 1px solid var(--cyan); outline-offset: 3px; }
+.bg-base {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 120%, #1b1e22 0%, var(--bg) 62%);
+}
+.toast {
+  background: rgba(16,18,21,.95); border: 1px solid rgba(0,219,231,.5); color: var(--text);
+  font: 500 11.5px var(--font-mono); letter-spacing: .08em; padding: 14px 22px; box-shadow: 0 0 24px rgba(0,219,231,.15);
+}
 
 /* keep jumps and focused fields clear of the sticky header */
 html { scroll-padding-top: 230px; }
